@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+YOUR COMPANION TO A DSHS LIFE! 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
