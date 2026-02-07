@@ -75,6 +75,21 @@ table, th, td { border: 1px solid #ccc; text-align:center; padding:5px; cursor: 
 </style>
 </head>
 <body>
+<div class="login-wrapper">
+
+  <!-- Logo at top of login page -->
+
+<img src="https://i.ibb.co/F4DpWS4d/logo.png" alt="DSHS Logo" 
+
+     style="display:block; margin: 60px auto 5px; width:140px; filter: drop-shadow(-5 10px 6px rgba(5,0,0,0.15));">
+
+  <!-- login form below -->
+
+  <h2></h2>
+
+  <!-- inputs here -->
+
+</div>
 
 <!-- LOGIN -->
 <div class="login" id="login">
