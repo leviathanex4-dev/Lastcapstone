@@ -76,7 +76,8 @@ table, th, td { border: 1px solid #ccc; text-align:center; padding:5px; cursor: 
 </style>
 </head>
 <body>
-<div class="login-wrapper">
+  <div
+  class="login-wrapper">
 
   <!-- Logo at top of login page -->
 
