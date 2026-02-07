@@ -4,19 +4,20 @@ YOUR COMPANION TO A DSHS LIFE!
 <meta charset="UTF-8">
 <title>DSHS School System</title>
 <style>
-body {
+
+  body {
+
   margin: 0;
-  font-family: Arial, serif;
-  background-color: #fff;
-  background-image:
-    repeating-linear-gradient(to bottom, transparent 0px, transparent 26px, rgba(0,0,0,0.08) 27px),
-    url('https://source.unsplash.com/1600x900/?school,classroom'),
-    url('https://i.ibb.co/4m7KgXg/scribbles.png');
-  background-size: 100% 28px, cover, 100px 100px;
-  background-blend-mode: lighten;
-  color: #222;
+
+  min-height: 100vh;
+
+  background: url(https://i.ibb.co/XxJDdGth/your-image.png)
+
+    center center / cover no-repeat fixed;
+
+  image-rendering: auto;
 }
-.signup-link { color: #007bff; font-weight: bold; cursor: pointer; }
+signup-link { color: #007bff; font-weight: bold; cursor: pointer; }
 .signup-link:hover { text-decoration: underline; }
 input, button, textarea, select { width: 100%; padding: 8px; margin-top: 6px; box-sizing: border-box; }
 button { cursor: pointer; }
