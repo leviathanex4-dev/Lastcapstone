@@ -9,7 +9,7 @@ YOUR COMPANION TO A DSHS LIFE!
 
   margin: 0;
 
-  min-height: 100vh;
+  min-height: 70vh;
 
   background: url(https://i.ibb.co/XxJDdGth/your-image.png)
 
@@ -17,14 +17,14 @@ YOUR COMPANION TO A DSHS LIFE!
 
   image-rendering: auto;
 }
-signup-link { color: #007bff; font-weight: bold; cursor: pointer; }
+signup-link { color: blue; font-weight: bold; cursor: pointer; }
 .signup-link:hover { text-decoration: underline; }
 input, button, textarea, select { width: 100%; padding: 8px; margin-top: 6px; box-sizing: border-box; }
 button { cursor: pointer; }
 .edit { border: 1px solid #ccc; }
 .view-only { background: #f9f9f9; pointer-events: none; }
 .login { height: 100vh; display: flex; justify-content: center; align-items: center; }
-.box { background: rgba(255,255,255,0.95); padding: 25px; width: 320px; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); text-align: center; }
+.box { background: rgba(255,255,255,0.95); padding: 25px; width: 320px; border-radius: 8px; box-shadow: 10 10px 20px rgba(0,0,0,0.3); text-align: center; }
 .pass-wrapper { position: relative; }
 .pass-wrapper span { position: absolute; right: 10px; top: 10px; cursor: pointer; }
 .dashboard { display: none; height: 100vh; }
@@ -83,7 +83,7 @@ table, th, td { border: 1px solid #ccc; text-align:center; padding:5px; cursor: 
 
 <img src="https://i.ibb.co/F4DpWS4d/logo.png" alt="DSHS Logo" 
 
-     style="display:block; margin: 60px auto 5px; width:140px; filter: drop-shadow(-5 10px 6px rgba(5,0,0,0.15));">
+     style="display:block; margin: 40px auto 5px; width:180px; filter: drop-shadow(-5 10px 6px rgba(5,0,0,0.15));">
 
   <!-- login form below -->
 
