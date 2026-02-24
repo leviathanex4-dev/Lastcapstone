@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -34,8 +34,12 @@
     padding: 10px 15px; 
     border-radius: 6px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   .toggle-btn:hover { background: #002244; }
+  .toggle-btn .icon { font-size: 20px; }
   
   .login { 
     height: 100vh; 
@@ -64,13 +68,14 @@
   
   .dashboard { display: none; min-height: 100vh; }
   .header { 
-    background: rgba(0,51,102,0.95); 
+    background: linear-gradient(135deg, #8B0000 0%, #003366 100%); 
     color: white; 
     padding: 15px; 
     text-align: center; 
     font-size: 16px; 
     position: relative; 
     z-index: 1;
+    padding-left: 60px;
   }
   .container { 
     display: flex; 
@@ -78,11 +83,22 @@
     position: relative; 
   }
   
+  .menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 998;
+  }
+  .menu-overlay.show { display: block; }
+  
   .menu {
-    width: 250px;
-    background: rgba(255,255,255,0.98);
+    width: 280px;
+    background: linear-gradient(180deg, #8B0000 0%, #660000 100%);
     padding: 15px;
-    box-shadow: 2px 0 15px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -93,25 +109,41 @@
     transition: transform 0.3s ease;
     transform: translateX(-100%);
     overflow-y: auto;
-    padding-top: 60px;
+    padding-top: 70px;
   }
   .menu.show { transform: translateX(0); }
+  .menu-header {
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+    margin-bottom: 15px;
+  }
   .menu button {
-    background: #f0f0f0;
-    color: #333;
+    background: rgba(255,255,255,0.1);
+    color: white;
     margin-top: 8px;
     font-size: 14px;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 6px;
     padding: 12px 10px;
     transition: all 0.2s;
+    text-align: left;
   }
-  .menu button:hover { background: #003366; color: white; }
+  .menu button:hover { 
+    background: rgba(255,255,255,0.2); 
+    transform: translateX(5px);
+  }
+  .menu button:active {
+    background: rgba(255,255,255,0.3);
+  }
   .logout { 
     margin-top: auto; 
     background: #d9534f !important; 
     color: white !important; 
+    text-align: center;
   }
+  .logout:hover { background: #c9302c !important; }
   
   .content { 
     flex: 1; 
@@ -162,33 +194,40 @@
   .chatbox { 
     border: 1px solid #ddd; 
     padding: 15px; 
-    height: 250px; 
+    height: 300px; 
     width: 100%; 
     overflow-y: auto; 
     margin-top: 10px; 
     border-radius: 5px; 
     background: white;
   }
+  .chat-message { margin-bottom: 10px; padding: 10px; border-radius: 5px; }
+  .chat-user { background: #e3f2fd; text-align: left; }
+  .chat-ai { background: #f3e5f5; text-align: left; }
   
   .id-card { 
-    background: white; 
-    border: 2px solid #003366; 
-    border-radius: 10px; 
-    padding: 15px; 
+    background: linear-gradient(135deg, #8B0000 0%, #003366 100%); 
+    border: 3px solid #ffd700; 
+    border-radius: 15px; 
+    padding: 20px; 
     width: 100%; 
-    max-width: 320px; 
-    margin: 10px; 
+    max-width: 350px; 
+    margin: 15px; 
     display: inline-block; 
     vertical-align: top; 
+    color: white;
+    position: relative;
   }
   .id-card-header { 
-    background: #003366; 
-    color: white; 
-    padding: 12px; 
+    background: rgba(255,255,255,0.1); 
+    padding: 15px; 
     text-align: center; 
-    border-radius: 8px 8px 0 0; 
-    margin: -15px -15px 15px -15px; 
+    border-radius: 10px 10px 0 0; 
+    margin: -20px -20px 15px -20px; 
+    border-bottom: 2px solid #ffd700;
   }
+  .id-card-header h3 { margin: 0; font-size: 16px; color: #ffd700; }
+  .id-card-header p { margin: 5px 0 0 0; font-size: 11px; color: #ccc; }
   .id-card-photo { 
     width: 100px; 
     height: 100px; 
@@ -199,10 +238,34 @@
     align-items: center; 
     justify-content: center; 
     overflow: hidden; 
-    border: 3px solid #003366;
+    border: 4px solid #ffd700;
   }
   .id-card-photo img { width: 100%; height: 100%; object-fit: cover; }
-  .id-card-info { text-align: left; font-size: 13px; }
+  .id-card-info { 
+    text-align: left; 
+    font-size: 13px; 
+    background: rgba(0,0,0,0.2); 
+    padding: 15px; 
+    border-radius: 10px;
+  }
+  .id-card-info p { margin: 8px 0; }
+  .id-card-info strong { color: #ffd700; }
+  .id-card-footer {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    font-size: 10px;
+    color: #ccc;
+  }
+  .id-card-checkbox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+  }
   
   .attendance-calendar { 
     display: grid; 
@@ -253,7 +316,7 @@
   }
   .planner-section { margin-bottom: 20px; }
   .planner-section h4 { 
-    background: #003366; 
+    background: linear-gradient(135deg, #8B0000 0%, #003366 100%); 
     color: white; 
     padding: 10px; 
     margin: 0 0 10px 0; 
@@ -307,17 +370,123 @@
   .stat-number { font-size: 28px; font-weight: bold; }
   .stat-label { font-size: 12px; opacity: 0.9; }
   
+  .mood-selector {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .mood-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    font-size: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: white;
+  }
+  .mood-btn:hover, .mood-btn.selected {
+    transform: scale(1.2);
+    border-color: #003366;
+  }
+  .mood-btn.selected {
+    box-shadow: 0 0 20px rgba(0,51,102,0.5);
+  }
+  
+  .parent-account-card {
+    background: #f8f9fa;
+    border: 2px solid #003366;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+  }
+  .parent-account-card h4 {
+    color: #003366;
+    margin-top: 0;
+  }
+  .parent-account-card .credentials {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  .parent-account-card .credentials p {
+    margin: 5px 0;
+    font-family: monospace;
+  }
+  
+  .print-controls {
+    background: #fff3cd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 2px solid #ffc107;
+  }
+  
   @media (max-width: 768px) {
-    .menu { width: 85%; max-width: 300px; }
-    .section { padding: 15px; margin-top: 10px; }
-    .attendance-legend { position: relative; bottom: auto; right: auto; margin-top: 15px; width: 100%; }
+    .menu { 
+      width: 85%; 
+      max-width: 320px; 
+    }
+    .section { 
+      padding: 15px; 
+      margin-top: 10px; 
+    }
+    .attendance-legend { 
+      position: relative; 
+      bottom: auto; 
+      right: auto; 
+      margin-top: 15px; 
+      width: 100%; 
+    }
     .schedule-box div { flex: 1 1 100%; }
-    table { display: block; overflow-x: auto; white-space: nowrap; }
+    table { 
+      display: block; 
+      overflow-x: auto; 
+      white-space: nowrap; 
+    }
+    .id-card { 
+      max-width: 100%; 
+      margin: 10px 0; 
+    }
+    .mood-selector {
+      gap: 10px;
+    }
+    .mood-btn {
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+    }
+    .header {
+      padding-left: 50px;
+      font-size: 14px;
+    }
+    .toggle-btn {
+      padding: 8px 12px;
+      font-size: 14px;
+    }
   }
   
   @media print {
-    .menu, .toggle-btn, .header { display: none !important; }
-    .id-card { break-inside: avoid; page-break-inside: avoid; border: 2px solid #000; }
+    .menu, .toggle-btn, .header, .print-controls, .attendance-legend, .menu-overlay {
+      display: none !important;
+    }
+    .id-card { 
+      break-inside: avoid; 
+      page-break-inside: avoid; 
+      border: 3px solid #000; 
+      display: inline-block;
+      margin: 10px;
+    }
+    .content {
+      padding: 0;
+    }
+    .section {
+      box-shadow: none;
+      padding: 10px;
+    }
   }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -326,8 +495,8 @@
 <body>
   
   <div class="login-wrapper">
-  <img src="https://i.ibb.co/F4DpWS4d/logo.png" alt="DSHS Logo" style="display:block; margin: 40px auto 5px; width:180px;">
-</div>
+    <img src="https://i.ibb.co/F4DpWS4d/logo.png" alt="DSHS Logo" style="display:block; margin: 40px auto 5px; width:180px;">
+  </div>
 
 <div class="login" id="login">
   <div class="box">
@@ -339,7 +508,7 @@
     </div>
     <button onclick="login()">Login</button>
     <p id="msg"></p>
-    <p style="font-size:13px; margin-top:10px;">Don't have an account yet? <span class="signup-link" onclick="showSignup()">Sign up!</span></p>
+    <p style="font-size margin-top:10:13px;px;">Don't have an account yet? <span class="signup-link" onclick="showSignup()">Sign up!</span></p>
   </div>
 </div>
 
@@ -361,6 +530,11 @@
 </div>
 
 <div class="dashboard" id="dashboard">
+  <button class="toggle-btn" onclick="toggleMenu()">
+    <span class="icon">☰</span>
+    <span class="text">Menu</span>
+  </button>
+  <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
   <div class="header" id="roleTitle"></div>
   <div class="container">
     <div class="menu" id="menu"></div>
@@ -412,8 +586,8 @@ if(Object.keys(attendanceData).length===0){
 let bulletinBoard = JSON.parse(localStorage.getItem('bulletinBoard')) || ["Welcome to the DSHS School System!"];
 let plannerData = JSON.parse(localStorage.getItem('plannerData')) || {};
 let adminAccount = {name:"Administrator", username:"admin", password:simpleHash("admin123")};
-
-//------ SAVE ------
+  
+  //------ SAVE ------
 function saveData(){
   try{
     localStorage.setItem('students', JSON.stringify(students));
@@ -426,6 +600,12 @@ function saveData(){
     localStorage.setItem('bulletinBoard', JSON.stringify(bulletinBoard));
     localStorage.setItem('plannerData', JSON.stringify(plannerData));
   } catch(e){ alert("Storage error."); }
+}
+
+//------ TOGGLE MENU ------
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("menuOverlay").classList.toggle("show");
 }
 
 //------ PASSWORD TOGGLE ------
@@ -457,39 +637,32 @@ function loadDashboard(){
   document.getElementById("roleTitle").innerText = role.toUpperCase()+" DASHBOARD";
   const menu=document.getElementById("menu"); menu.innerHTML="";
   
-  let toggleBtn = document.querySelector(".toggle-btn");
-  if(!toggleBtn){
-    toggleBtn = document.createElement("button");
-    toggleBtn.className = "toggle-btn";
-    toggleBtn.innerText = "☰ Menu";
-    document.body.appendChild(toggleBtn);
-  }
-  toggleBtn.onclick = function() {
-    document.getElementById("menu").classList.toggle("show");
-  };
-
   let items = ["Attendance","Subject Schedule","My Info","Bulletin Board","School Map"];
   if(role==="teacher") items = ["Attendance","Subject Schedule","My Info","Bulletin Board","Grades","Parent Chat","My Planner","Emergency Numbers","School Map"];
-  else if(role==="student") items = ["Attendance","Subject Schedule","My Info","Bulletin Board","Grades","QR Code","Emergency Numbers","School Map"];
+  else if(role==="student") items = ["Attendance","Subject Schedule","My Info","Bulletin Board","Grades","QR Code","My Mood","Emergency Numbers","School Map"];
   else if(role==="parent") items = ["Child Attendance","Child Grades","Child Schedule","My Info","Bulletin Board","Teacher Chat","Emergency Numbers","School Map"];
-  else if(role==="admin") items = ["Student Approval","Create Teacher","All Students","Manage Users","Bulletin Board","Emergency Numbers","School Map"];
+  else if(role==="admin") items = ["Student Approval","Create Teacher","All Students","Parent Accounts","Manage Users","Bulletin Board","Emergency Numbers","School Map"];
 
-  createMenu(items);
-  const logoutBtn=document.createElement("button"); logoutBtn.innerText="⬅ Logout"; logoutBtn.className="logout"; logoutBtn.onclick=logout; menu.appendChild(logoutBtn);
-}
-
-//------ CREATE MENU ------
-function createMenu(items){
-  const menu=document.getElementById("menu");
+  menu.innerHTML = '<div class="menu-header"><h3>DSHS Menu</h3><p>' + currentUser + '</p></div>';
+  
   items.forEach(function(item){
     const btn=document.createElement("button");
-    btn.innerText=item;
+    btn.innerText = item;
     btn.onclick=function() {
-      document.getElementById("menu").classList.remove("show");
+      toggleMenu();
       loadSection(item);
     };
     menu.appendChild(btn);
   });
+
+  const logoutBtn=document.createElement("button"); 
+  logoutBtn.innerText="⬅ Logout"; 
+  logoutBtn.className="logout"; 
+  logoutBtn.onclick=function() {
+    toggleMenu();
+    logout();
+  }; 
+  menu.appendChild(logoutBtn);
 }
 
 //------ LOGOUT ------
@@ -497,8 +670,8 @@ function logout(){
   role=""; currentUser="";
   document.getElementById("dashboard").style.display="none";
   document.getElementById("login").style.display="flex";
-  let toggleBtn = document.querySelector(".toggle-btn");
-  if(toggleBtn) toggleBtn.remove();
+  document.getElementById("menu").classList.remove("show");
+  document.getElementById("menuOverlay").classList.remove("show");
 }
 
 //------ SHOW SIGNUP/LOGIN ------
@@ -520,14 +693,39 @@ function submitSignup(){
   if(password.length<6){ alert("Password must be at least 6 characters!"); return; }
   if(students.find(function(s){ return s.username===username; }) || students.find(function(s){ return s.id===id; })){ alert("Username or ID already exists!"); return; }
 
+  // Generate parent account automatically
+  let parentUsername = "parent" + id;
+  let parentPassword = Math.random().toString(36).slice(-6);
+  
   students.push({name,id,section,track,strand,gradeLevel,username,password:simpleHash(password),approved:false,pic:""});
   gradesData[name]={}; subjects.forEach(function(sub){ gradesData[name][sub]=0; });
-  attendanceData[name]={}; saveData();
-  alert("Signup successful! Wait for admin approval.");
+  attendanceData[name]={};
+  
+  // Create parent account automatically
+  parents.push({
+    name: "Parent of " + name,
+    child: name,
+    username: parentUsername,
+    password: simpleHash(parentPassword)
+  });
+  
+  // Store parent credentials for admin to see
+  let parentAccounts = JSON.parse(localStorage.getItem('parentAccounts')) || [];
+  parentAccounts.push({
+    studentName: name,
+    studentId: id,
+    section: section,
+    parentUsername: parentUsername,
+    parentPassword: parentPassword
+  });
+  localStorage.setItem('parentAccounts', JSON.stringify(parentAccounts));
+  
+  saveData();
+  alert("Signup successful! Wait for admin approval.\n\nParent Account:\nUsername: " + parentUsername + "\nPassword: " + parentPassword);
   clearSignup(); showLogin();
 }
-
-//------ LOAD SECTION ------
+  
+  //------ LOAD SECTION ------
 function loadSection(tab){
   const content=document.getElementById("content");
   content.innerHTML="";
@@ -626,7 +824,7 @@ function loadSection(tab){
     }
   }
   
-    //------ GRADES ------
+  //------ GRADES ------
   if(tab === "Grades" || tab === "Child Grades"){
     section.innerHTML = "<h3>Grades</h3>";
     
@@ -735,7 +933,7 @@ function loadSection(tab){
   }
 
   //------ CHAT ------
-  if(tab === "Parent Chat" || tab === "Teacher Chat" || tab === "E-Motion"){
+  if(tab === "Parent Chat" || tab === "Teacher Chat"){
     section.innerHTML = "<h3>" + tab + "</h3>";
     
     if(tab === "Parent Chat" && role === "teacher") {
@@ -887,8 +1085,9 @@ function loadSection(tab){
     }
   }
   
-  //------ ADMIN FUNCTIONS ------
+    //------ ADMIN FUNCTIONS ------
   if(role === "admin"){
+    //------ STUDENT APPROVAL ------
     if(tab === "Student Approval"){
       section.innerHTML = "<h3>Approve Students</h3>";
       const pendingStudents = students.filter(function(s){ return !s.approved; });
@@ -912,6 +1111,7 @@ function loadSection(tab){
       }
     }
     
+    //------ CREATE TEACHER ------
     if(tab === "Create Teacher"){
       section.innerHTML = "<h3>Create Teacher Account</h3>";
       section.innerHTML += '<input type="text" id="newTeacherName" placeholder="Full Name">' +
@@ -923,9 +1123,20 @@ function loadSection(tab){
         '<button onclick="createTeacher()" style="background:#003366;color:white;">Create Teacher</button>';
     }
     
+    //------ ALL STUDENTS (PRINT ID) ------
     if(tab === "All Students"){
       section.innerHTML = "<h3>All Students</h3>";
       
+      // Print controls
+      const printControls = document.createElement("div");
+      printControls.className = "print-controls";
+      printControls.innerHTML = '<h4>🖨️ Print ID Cards</h4>' +
+        '<p>Check the students you want to print, then click Print Selected.</p>' +
+        '<label><input type="checkbox" id="selectAllStudents" onchange="toggleSelectAllStudents()" style="width:auto;"> Select All</label><br><br>' +
+        '<button onclick="printSelectedIDs()" style="background:#28a745;color:white;width:auto;padding:10px 20px;">🖨️ Print Selected</button>';
+      section.appendChild(printControls);
+      
+      // Filter by section
       const filterSection = document.createElement("select");
       filterSection.id = "filterSection";
       filterSection.innerHTML = "<option value='all'>All Sections</option>";
@@ -938,15 +1149,6 @@ function loadSection(tab){
       });
       section.appendChild(filterSection);
       
-      const printBtn = document.createElement("button");
-      printBtn.innerText = "Print ID Cards";
-      printBtn.style.background = "#28a745";
-      printBtn.style.color = "white";
-      printBtn.style.margin = "10px 5px";
-      printBtn.style.padding = "12px 20px";
-      printBtn.onclick = function(){ window.print(); };
-      section.appendChild(printBtn);
-      
       const studentsContainer = document.createElement("div");
       studentsContainer.id = "studentsContainer";
       section.appendChild(studentsContainer);
@@ -958,10 +1160,40 @@ function loadSection(tab){
       renderStudentsBySection(studentsContainer, "all");
     }
     
+    //------ PARENT ACCOUNTS ------
+    if(tab === "Parent Accounts"){
+      section.innerHTML = "<h3>Parent Accounts</h3>";
+      section.innerHTML += "<p>These credentials are auto-generated when students sign up. Share with advisers to give to parents.</p>";
+      
+      // Filter by section
+      const filterSection = document.createElement("select");
+      filterSection.id = "filterParentSection";
+      filterSection.innerHTML = "<option value='all'>All Sections</option>";
+      const sections = [...new Set(students.map(function(s){ return s.section; }))];
+      sections.forEach(function(sec){
+        const opt = document.createElement("option");
+        opt.value = sec;
+        opt.innerText = sec;
+        filterSection.appendChild(opt);
+      });
+      section.appendChild(filterSection);
+      
+      const parentContainer = document.createElement("div");
+      parentContainer.id = "parentContainer";
+      section.appendChild(parentContainer);
+      
+      filterSection.onchange = function(){
+        renderParentAccounts(parentContainer, this.value);
+      };
+      
+      renderParentAccounts(parentContainer, "all");
+    }
+    
+    //------ MANAGE USERS ------
     if(tab === "Manage Users"){
       section.innerHTML = "<h3>Manage Users</h3>";
       
-      //------ STUDENTS MANAGEMENT ------
+      // Students
       section.innerHTML += "<h4>Students</h4>";
       const studentsTable = document.createElement("table");
       studentsTable.innerHTML = "<tr><th>Name</th><th>ID</th><th>Section</th><th>Action</th></tr>";
@@ -973,7 +1205,7 @@ function loadSection(tab){
       });
       section.appendChild(studentsTable);
       
-      //------ TEACHERS MANAGEMENT ------
+      // Teachers
       section.innerHTML += "<h4 style='margin-top:20px;'>Teachers</h4>";
       const teachersTable = document.createElement("table");
       teachersTable.innerHTML = "<tr><th>Name</th><th>ID</th><th>Section</th><th>Action</th></tr>";
@@ -987,7 +1219,7 @@ function loadSection(tab){
     }
   }
   
-    //------ MY PLANNER (TEACHER ONLY) ------
+  //------ MY PLANNER (TEACHER ONLY) ------
   if(tab === "My Planner" && role === "teacher"){
     section.innerHTML = "<h3>My Planner</h3>";
     
@@ -998,7 +1230,7 @@ function loadSection(tab){
     const plannerContainer = document.createElement("div");
     plannerContainer.className = "planner-container";
     
-    //------ DAILY GOALS ------
+    // Daily Goals
     const dailySection = document.createElement("div");
     dailySection.className = "planner-section";
     dailySection.innerHTML = "<h4>Daily Goals</h4>";
@@ -1012,14 +1244,12 @@ function loadSection(tab){
         '<button onclick="deletePlannerGoal(\'daily\', ' + index + ')" style="width:auto;background:#dc3545;color:white;padding:4px 8px;">×</button>';
       dailySection.appendChild(item);
     });
-    const dailyInput = document.createElement("div");
-    dailyInput.innerHTML = '<input type="text" id="dailyGoalInput" placeholder="Add daily goal...">' +
-      '<input type="time" id="dailyGoalTime">' +
+    dailySection.innerHTML += '<input type="text" id="dailyGoalInput" placeholder="Add daily goal..." style="width:60%;">' +
+      '<input type="time" id="dailyGoalTime" style="width:auto;">' +
       '<button onclick="addPlannerGoal(\'daily\')" style="width:auto;background:#28a745;color:white;">Add</button>';
-    dailySection.appendChild(dailyInput);
     plannerContainer.appendChild(dailySection);
     
-    //------ WEEKLY GOALS ------
+    // Weekly Goals
     const weeklySection = document.createElement("div");
     weeklySection.className = "planner-section";
     weeklySection.innerHTML = "<h4>Weekly Goals</h4>";
@@ -1029,18 +1259,15 @@ function loadSection(tab){
       item.innerHTML = '<input type="checkbox"' + (goal.completed ? " checked" : "") + ' onchange="togglePlannerGoal(\'weekly\', ' + index + ')">' +
         '<span class="goal-text">' + goal.text + '</span>' +
         '<span class="goal-time">' + (goal.time || "") + '</span>' +
-        '<button class="alarm-btn" onclick="setAlarm(\'' + goal.time + '\')">⏰</button>' +
         '<button onclick="deletePlannerGoal(\'weekly\', ' + index + ')" style="width:auto;background:#dc3545;color:white;padding:4px 8px;">×</button>';
       weeklySection.appendChild(item);
     });
-    const weeklyInput = document.createElement("div");
-    weeklyInput.innerHTML = '<input type="text" id="weeklyGoalInput" placeholder="Add weekly goal...">' +
-      '<input type="date" id="weeklyGoalDate">' +
+    weeklySection.innerHTML += '<input type="text" id="weeklyGoalInput" placeholder="Add weekly goal..." style="width:60%;">' +
+      '<input type="date" id="weeklyGoalDate" style="width:auto;">' +
       '<button onclick="addPlannerGoal(\'weekly\')" style="width:auto;background:#28a745;color:white;">Add</button>';
-    weeklySection.appendChild(weeklyInput);
     plannerContainer.appendChild(weeklySection);
     
-    //------ MONTHLY GOALS ------
+    // Monthly Goals
     const monthlySection = document.createElement("div");
     monthlySection.className = "planner-section";
     monthlySection.innerHTML = "<h4>Monthly Goals</h4>";
@@ -1050,18 +1277,56 @@ function loadSection(tab){
       item.innerHTML = '<input type="checkbox"' + (goal.completed ? " checked" : "") + ' onchange="togglePlannerGoal(\'monthly\', ' + index + ')">' +
         '<span class="goal-text">' + goal.text + '</span>' +
         '<span class="goal-time">' + (goal.time || "") + '</span>' +
-        '<button class="alarm-btn" onclick="setAlarm(\'' + goal.time + '\')">⏰</button>' +
         '<button onclick="deletePlannerGoal(\'monthly\', ' + index + ')" style="width:auto;background:#dc3545;color:white;padding:4px 8px;">×</button>';
       monthlySection.appendChild(item);
     });
-    const monthlyInput = document.createElement("div");
-    monthlyInput.innerHTML = '<input type="text" id="monthlyGoalInput" placeholder="Add monthly goal...">' +
-      '<input type="date" id="monthlyGoalDate">' +
+    monthlySection.innerHTML += '<input type="text" id="monthlyGoalInput" placeholder="Add monthly goal..." style="width:60%;">' +
+      '<input type="date" id="monthlyGoalDate" style="width:auto;">' +
       '<button onclick="addPlannerGoal(\'monthly\')" style="width:auto;background:#28a745;color:white;">Add</button>';
-    monthlySection.appendChild(monthlyInput);
     plannerContainer.appendChild(monthlySection);
     
     section.appendChild(plannerContainer);
+  }
+  
+  //------ MY MOOD (AI CHAT FOR STUDENTS) ------
+  if(tab === "My Mood" && role === "student"){
+    section.innerHTML = "<h3>🤗 My Mood - AI Companion</h3>";
+    section.innerHTML += "<p>Share how you're feeling and I'll help you feel better!</p>";
+    
+    // Mood selector
+    const moodDiv = document.createElement("div");
+    moodDiv.className = "mood-selector";
+    moodDiv.innerHTML = '<button class="mood-btn" onclick="selectMood(\'😊\')">😊</button>' +
+      '<button class="mood-btn" onclick="selectMood(\'😢\')">😢</button>' +
+      '<button class="mood-btn" onclick="selectMood(\'😠\')">😠</button>' +
+      '<button class="mood-btn" onclick="selectMood(\'😰\')">😰</button>' +
+      '<button class="mood-btn" onclick="selectMood(\'😴\')">😴</button>' +
+      '<button class="mood-btn" onclick="selectMood(\'🤗\')">🤗</button>';
+    section.appendChild(moodDiv);
+    
+    const chatbox = document.createElement("div");
+    chatbox.id = "moodChatbox";
+    chatbox.className = "chatbox";
+    chatbox.style.background = "#f0f8ff";
+    chatbox.innerHTML = '<div class="chat-message chat-ai"><strong>AI Companion:</strong> Hi! How are you feeling today? You can select a mood above or just tell me what\'s on your mind.</div>';
+    section.appendChild(chatbox);
+    
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = "moodInput";
+    input.placeholder = "Tell me what's on your mind...";
+    section.appendChild(input);
+    
+    const sendBtn = document.createElement("button");
+    sendBtn.innerText = "💬 Share";
+    sendBtn.style.background = "#6c5ce7";
+    sendBtn.style.color = "white";
+    sendBtn.onclick = function() { sendMoodMessage(); };
+    section.appendChild(sendBtn);
+    
+    section.innerHTML += '<div style="margin-top:15px;padding:10px;background:#fff3cd;border-radius:5px;font-size:12px;">' +
+      '<strong>💡 Tips:</strong> Talk about your feelings! I\'m here to listen and help.' +
+      '</div>';
   }
   
   //------ EMERGENCY NUMBERS ------
@@ -1076,7 +1341,8 @@ function loadSection(tab){
     numbers.forEach(function(n){
       const div = document.createElement("div");
       div.style.margin = "10px 0";
-      div.innerHTML = '<a href="tel:' + n.num + '">' + n.name + ' - ' + n.num + '</a>';
+      div.innerHTML = '<a href="tel:' + n.num + '" style="display:block;padding:15px;background:#f8f9fa;border-radius:8px;border-left:4px solid #dc3545;text-decoration:none;color:#333;">' +
+        '<strong>' + n.name + '</strong><br>' + n.num + '</a>';
       section.appendChild(div);
     });
   }
@@ -1085,7 +1351,7 @@ function loadSection(tab){
   if(tab === "School Map"){
     section.innerHTML = "<h3>School Map</h3>";
     section.innerHTML += '<div style="background:#f5f5f5;padding:20px;border-radius:10px;text-align:center;">' +
-      '<h4>DSHS Campus Layout</h4>' +
+      '<h4>🏫 DSHS Campus Layout</h4>' +
       '<p><strong>Building A</strong> - Main Entrance & Administration</p>' +
       '<p><strong>Building B</strong> - Classrooms 12-A, 12-B, 12-C</p>' +
       '<p><strong>Building C</strong> - Science Laboratory</p>' +
@@ -1099,8 +1365,8 @@ function loadSection(tab){
   
   content.appendChild(section);
 }
-
-//------ RENDER ATTENDANCE CALENDAR ------
+  
+  //------ RENDER ATTENDANCE CALENDAR ------
 function renderAttendanceCalendar(container, studentName) {
   const existingCalendar = document.getElementById("attendanceCalendar");
   if(existingCalendar) existingCalendar.remove();
@@ -1168,7 +1434,7 @@ function renderAttendanceCalendar(container, studentName) {
   
   container.appendChild(calendar);
   
-  //------ LEGEND BOX ------
+  // Legend
   const legend = document.createElement("div");
   legend.className = "attendance-legend";
   legend.innerHTML = "<p><strong>Legend:</strong></p>" +
@@ -1213,7 +1479,7 @@ function renderGradesTable(container, studentName) {
   container.appendChild(table);
 }
 
-//------ RENDER STUDENTS BY SECTION ------
+//------ RENDER STUDENTS BY SECTION (WITH CHECKBOXES) ------
 function renderStudentsBySection(container, sectionFilter) {
   container.innerHTML = "";
   
@@ -1225,11 +1491,13 @@ function renderStudentsBySection(container, sectionFilter) {
   filteredStudents.forEach(function(s){
     const idCard = document.createElement("div");
     idCard.className = "id-card";
-    idCard.innerHTML = '<div class="id-card-header"><h3 style="margin:0;">DSHS</h3><p style="margin:0;font-size:12px;">Student ID Card</p></div>' +
+    idCard.innerHTML = '<input type="checkbox" class="id-card-checkbox" data-student-id="' + s.id + '">' +
+      '<div class="id-card-header"><h3 style="margin:0;">DUMINGAG SENIOR HIGH SCHOOL</h3><p style="margin:0;font-size:11px;">Student ID Card</p></div>' +
       '<div class="id-card-photo"><img src="' + (s.pic || 'https://via.placeholder.com/80') + '" alt="Photo" onerror="this.src=\'https://via.placeholder.com/80\'"></div>' +
       '<div class="id-card-info"><p><strong>Name:</strong> ' + s.name + '</p><p><strong>ID No:</strong> ' + s.id + '</p>' +
       '<p><strong>Section:</strong> ' + s.section + '</p><p><strong>Track:</strong> ' + s.track + '</p>' +
       '<p><strong>Strand:</strong> ' + s.strand + '</p><p><strong>Grade:</strong> ' + s.gradeLevel + '</p></div>' +
+      '<div class="id-card-footer">Dumingag Senior High School - Dumingag, Zamboanga del Sur</div>' +
       '<div id="qr-' + s.id + '" style="text-align:center;margin-top:10px;"></div>';
     
     container.appendChild(idCard);
@@ -1242,6 +1510,55 @@ function renderStudentsBySection(container, sectionFilter) {
       });
     }, 100);
   });
+}
+
+//------ RENDER PARENT ACCOUNTS ------
+function renderParentAccounts(container, sectionFilter) {
+  container.innerHTML = "";
+  
+  let parentAccounts = JSON.parse(localStorage.getItem('parentAccounts')) || [];
+  
+  let filteredAccounts = parentAccounts;
+  if(sectionFilter !== "all") {
+    filteredAccounts = parentAccounts.filter(function(p){ return p.section === sectionFilter; });
+  }
+  
+  if(filteredAccounts.length === 0) {
+    container.innerHTML = "<p>No parent accounts found.</p>";
+    return;
+  }
+  
+  filteredAccounts.forEach(function(p){
+    const card = document.createElement("div");
+    card.className = "parent-account-card";
+    card.innerHTML = '<h4>👤 ' + p.studentName + '</h4>' +
+      '<p><strong>Student ID:</strong> ' + p.studentId + '</p>' +
+      '<p><strong>Section:</strong> ' + p.section + '</p>' +
+      '<div class="credentials">' +
+      '<p><strong>Parent Username:</strong> ' + p.parentUsername + '</p>' +
+      '<p><strong>Parent Password:</strong> ' + p.parentPassword + '</p>' +
+      '</div>';
+    container.appendChild(card);
+  });
+}
+
+//------ TOGGLE SELECT ALL STUDENTS ------
+function toggleSelectAllStudents() {
+  const selectAll = document.getElementById("selectAllStudents");
+  const checkboxes = document.querySelectorAll(".id-card-checkbox");
+  checkboxes.forEach(function(cb){
+    cb.checked = selectAll.checked;
+  });
+}
+
+//------ PRINT SELECTED IDS ------
+function printSelectedIDs() {
+  const checkboxes = document.querySelectorAll(".id-card-checkbox:checked");
+  if(checkboxes.length === 0) {
+    alert("Please select at least one student to print!");
+    return;
+  }
+  window.print();
 }
 
 //------ APPROVE STUDENT ------
@@ -1321,8 +1638,8 @@ function createTeacher() {
   document.getElementById("newTeacherUsername").value = "";
   document.getElementById("newTeacherPassword").value = "";
 }
-
-//------ UPDATE SUBJECT ------
+  
+  //------ UPDATE SUBJECT ------
 function updateSubject(index, newValue) {
   const oldValue = subjects[index];
   subjects[index] = newValue;
@@ -1468,7 +1785,7 @@ function sendChatMessage(tab) {
   input.value = "";
 }
 
-//------ ADD PLANNER GOAL ------
+//------ PLANNER FUNCTIONS ------
 function addPlannerGoal(type) {
   const input = document.getElementById(type + "GoalInput");
   const timeInput = document.getElementById(type + "GoalTime") || document.getElementById(type + "GoalDate");
@@ -1492,27 +1809,133 @@ function addPlannerGoal(type) {
   loadSection("My Planner");
 }
 
-//------ TOGGLE PLANNER GOAL ------
 function togglePlannerGoal(type, index) {
   plannerData[currentUser][type][index].completed = !plannerData[currentUser][type][index].completed;
   saveData();
   loadSection("My Planner");
 }
 
-//------ DELETE PLANNER GOAL ------
 function deletePlannerGoal(type, index) {
   plannerData[currentUser][type].splice(index, 1);
   saveData();
   loadSection("My Planner");
 }
 
-//------ SET ALARM ------
 function setAlarm(time) {
   if(!time) {
     alert("No time set for this goal!");
     return;
   }
   alert("Alarm set for " + time + "\n\nNote: Browser notifications must be enabled for actual alerts.");
+}
+
+//------ MY MOOD AI CHAT FUNCTIONS ------
+let selectedMood = "";
+
+function selectMood(mood) {
+  selectedMood = mood;
+  
+  // Update UI
+  const buttons = document.querySelectorAll(".mood-btn");
+  buttons.forEach(function(btn) {
+    if(btn.innerText === mood) {
+      btn.classList.add("selected");
+    } else {
+      btn.classList.remove("selected");
+    }
+  });
+  
+  // Send mood to chat
+  const chatbox = document.getElementById("moodChatbox");
+  chatbox.innerHTML += '<div class="chat-message chat-user"><strong>You:</strong> ' + mood + '</div>';
+  chatbox.scrollTop = chatbox.scrollHeight;
+  
+  // Get AI response based on mood
+  getAIResponse("I feel " + mood);
+}
+
+function sendMoodMessage() {
+  const input = document.getElementById("moodInput");
+  const message = input.value.trim();
+  
+  if(!message && !selectedMood) {
+    alert("Please select a mood or type a message!");
+    return;
+  }
+  
+  const chatbox = document.getElementById("moodChatbox");
+  
+  if(message) {
+    chatbox.innerHTML += '<div class="chat-message chat-user"><strong>You:</strong> ' + message + '</div>';
+    chatbox.scrollTop = chatbox.scrollHeight;
+    input.value = "";
+    
+    // Send to AI
+    getAIResponse(message);
+  }
+}
+
+function getAIResponse(message) {
+  const chatbox = document.getElementById("moodChatbox");
+  
+  // Show typing indicator
+  chatbox.innerHTML += '<div class="chat-message chat-ai" id="typingIndicator"><em>Thinking...</em></div>';
+  chatbox.scrollTop = chatbox.scrollHeight;
+  
+  // Simulated AI responses (rule-based - no API needed)
+  setTimeout(function() {
+    const typingIndicator = document.getElementById("typingIndicator");
+    if(typingIndicator) typingIndicator.remove();
+    
+    const response = getSupportiveResponse(message);
+    chatbox.innerHTML += '<div class="chat-message chat-ai"><strong>AI Companion:</strong> ' + response + '</div>';
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }, 1000);
+}
+
+function getSupportiveResponse(message) {
+  const lowerMessage = message.toLowerCase();
+  
+  // Happy/Good moods
+  if(lowerMessage.includes("😊") || lowerMessage.includes("happy") || lowerMessage.includes("good") || lowerMessage.includes("great") || lowerMessage.includes("excited") || lowerMessage.includes("love")) {
+    return "That's wonderful! 🎉 I'm so glad you're feeling good! Keep that positive energy going! Remember to share your happiness with others too!";
+  }
+  
+  // Sad/Down moods
+  if(lowerMessage.includes("😢") || lowerMessage.includes("sad") || lowerMessage.includes("depressed") || lowerMessage.includes("unhappy") || lowerMessage.includes("down") || lowerMessage.includes("crying") || lowerMessage.includes("hurt")) {
+    return "I'm here for you. 💙 It's okay to feel sad sometimes. Would you like to talk about what's making you feel this way? Remember, you're not alone. Consider talking to a trusted teacher or counselor.";
+  }
+  
+  // Angry/Frustrated moods
+  if(lowerMessage.includes("😠") || lowerMessage.includes("angry") || lowerMessage.includes("mad") || lowerMessage.includes("frustrated") || lowerMessage.includes("annoyed") || lowerMessage.includes("hate")) {
+    return "I understand you're feeling angry. 😤 Take a deep breath... Inhale for 4 seconds, hold for 7, exhale for 8. Would you like to talk about what's frustrating you?";
+  }
+  
+  // Anxious/Worried/Nervous
+  if(lowerMessage.includes("😰") || lowerMessage.includes("anxious") || lowerMessage.includes("nervous") || lowerMessage.includes("worried") || lowerMessage.includes("stressed") || lowerMessage.includes("scared") || lowerMessage.includes("fear")) {
+    return "It's okay to feel anxious sometimes. 🌸 Try these tips:\n\n1. Take deep breaths\n2. Write down your worries\n3. Talk to someone you trust\n\nRemember, one step at a time. You can get through this!";
+  }
+  
+  // Tired/Sleepy
+  if(lowerMessage.includes("😴") || lowerMessage.includes("tired") || lowerMessage.includes("sleepy") || lowerMessage.includes("exhausted") || lowerMessage.includes("fatigued") || lowerMessage.includes("sleep")) {
+    return "You sound tired! 😴 Make sure you're getting enough sleep - teens need 8-10 hours. Take breaks when studying, stay hydrated, and don't forget to rest. Your health comes first!";
+  }
+  
+  // Love/Grateful
+  if(lowerMessage.includes("🤗") || lowerMessage.includes("love") || lowerMessage.includes("grateful") || lowerMessage.includes("thankful") || lowerMessage.includes("blessed")) {
+    return "That's a beautiful feeling! 💕 Gratitude is so important for mental health. Consider writing down 3 things you're grateful for each day. You're amazing!";
+  }
+  
+  // Default supportive responses
+  const responses = [
+    "Thank you for sharing that with me. 💙 I'm here to listen. Do you want to talk more about it?",
+    "I hear you. 🌸 Remember, it's okay to not be okay. Would you like some suggestions on how to cope?",
+    "Thanks for opening up to me. 💜 You're very brave. Is there anything specific you'd like to talk about?",
+    "I appreciate you sharing your feelings. 💙 Would you like me to share some helpful tips?",
+    "Your feelings are valid. 🌟 You're doing great by talking about them. Keep going!"
+  ];
+  
+  return responses[Math.floor(Math.random() * responses.length)];
 }
 
 //------ INITIALIZE ON PAGE LOAD ------
