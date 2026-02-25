@@ -5,25 +5,57 @@
 <title>DSHS School System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+  /*------ COLOR SCHEME ------*/
+  :root {
+    --main-red: #8B0000;
+    --main-blue: #003366;
+    --main-gray: #6c757d;
+    --sub-yellow: #ffc107;
+    --sub-orange: #fd7e14;
+    --light-gray: #f8f9fa;
+    --dark-gray: #495057;
+  }
+  
   body { 
     margin: 0; 
     min-height: 70vh; 
     background: url(https://i.ibb.co/XxJDdGth/your-image.png) center center / cover no-repeat fixed; 
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
-  .signup-link { color: blue; font-weight: bold; cursor: pointer; }
+  
+  .signup-link { color: var(--main-blue); font-weight: bold; cursor: pointer; }
   .signup-link:hover { text-decoration: underline; }
+  
   input, button, textarea, select { 
     width: 100%; 
-    padding: 10px; 
+    padding: 12px; 
     margin-top: 8px; 
     box-sizing: border-box; 
     font-size: 14px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    transition: border-color 0.3s;
   }
-  button { cursor: pointer; border-radius: 5px; }
+  
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--main-blue);
+    outline: none;
+  }
+  
+  button { 
+    cursor: pointer; 
+    border-radius: 6px; 
+    font-weight: bold;
+    transition: all 0.3s;
+  }
+  
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
   
   .toggle-btn { 
-    background: #003366; 
+    background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); 
     color: white; 
     font-size: 18px; 
     border: none; 
@@ -31,15 +63,28 @@
     top: 12px; 
     left: 12px; 
     z-index: 1000; 
-    padding: 10px 15px; 
-    border-radius: 6px;
+    padding: 12px 18px; 
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   }
-  .toggle-btn:hover { background: #002244; }
-  .toggle-btn .icon { font-size: 20px; }
+  .toggle-btn:hover { 
+    background: linear-gradient(135deg, #660000 0%, #002244 100%);
+    transform: scale(1.05);
+  }
+  .toggle-btn .icon { font-size: 22px; }
+  
+  .toggle-btn.small {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  .toggle-btn.small .text {
+    display: none;
+  }
   
   .login { 
     height: 100vh; 
@@ -48,35 +93,46 @@
     align-items: center; 
     padding: 20px;
   }
+  
   .box { 
-    background: rgba(255,255,255,0.95); 
-    padding: 30px; 
+    background: rgba(255,255,255,0.98); 
+    padding: 40px; 
     width: 100%; 
-    max-width: 400px; 
-    border-radius: 10px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+    max-width: 420px; 
+    border-radius: 15px; 
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3); 
     text-align: center; 
+    border-top: 5px solid var(--main-red);
   }
+  
+  .box h2 {
+    color: var(--main-blue);
+    margin-bottom: 25px;
+  }
+  
   .pass-wrapper { position: relative; }
   .pass-wrapper span { 
     position: absolute; 
     right: 15px; 
-    top: 15px; 
+    top: 18px; 
     cursor: pointer; 
     font-size: 18px;
   }
   
   .dashboard { display: none; min-height: 100vh; }
+  
   .header { 
-    background: linear-gradient(135deg, #8B0000 0%, #003366 100%); 
+    background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); 
     color: white; 
-    padding: 15px; 
+    padding: 18px; 
     text-align: center; 
-    font-size: 16px; 
+    font-size: 18px; 
     position: relative; 
     z-index: 1;
-    padding-left: 60px;
+    padding-left: 70px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   }
+  
   .container { 
     display: flex; 
     min-height: calc(100vh - 60px); 
@@ -90,14 +146,15 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.6);
     z-index: 998;
+    backdrop-filter: blur(3px);
   }
   .menu-overlay.show { display: block; }
   
   .menu {
-    width: 280px;
-    background: linear-gradient(180deg, #8B0000 0%, #660000 100%);
+    width: 300px;
+    background: linear-gradient(180deg, var(--main-red) 0%, #5a0000 50%, var(--main-blue) 100%);
     padding: 15px;
     display: flex;
     flex-direction: column;
@@ -106,366 +163,785 @@
     left: 0;
     height: 100%;
     z-index: 999;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     transform: translateX(-100%);
     overflow-y: auto;
-    padding-top: 70px;
+    padding-top: 80px;
+    box-shadow: 5px 0 25px rgba(0,0,0,0.4);
   }
+  
   .menu.show { transform: translateX(0); }
+  
   .menu-header {
     color: white;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
     border-bottom: 2px solid rgba(255,255,255,0.3);
-    margin-bottom: 15px;
-  }
-  .menu button {
+    margin-bottom: 20px;
     background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+  }
+  
+  .menu-header h3 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--sub-yellow);
+  }
+  
+  .menu-header p {
+    margin: 5px 0 0 0;
+    font-size: 13px;
+    opacity: 0.9;
+  }
+  
+  .menu button {
+    background: rgba(255,255,255,0.15);
     color: white;
-    margin-top: 8px;
-    font-size: 14px;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 6px;
-    padding: 12px 10px;
-    transition: all 0.2s;
+    margin-top: 10px;
+    font-size: 15px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    padding: 14px 15px;
+    transition: all 0.3s;
     text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
+  
   .menu button:hover { 
-    background: rgba(255,255,255,0.2); 
-    transform: translateX(5px);
+    background: rgba(255,255,255,0.3); 
+    transform: translateX(8px);
+    padding-left: 20px;
   }
+  
   .menu button:active {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.4);
+    transform: scale(0.98);
   }
-  .logout { 
-    margin-top: auto; 
-    background: #d9534f !important; 
-    color: white !important; 
+  
+  .menu button .tab-icon {
+    font-size: 20px;
+    width: 30px;
     text-align: center;
   }
-  .logout:hover { background: #c9302c !important; }
+  
+  .logout { 
+    margin-top: auto; 
+    background: var(--sub-orange) !important; 
+    color: white !important; 
+    text-align: center;
+    justify-content: center;
+  }
+  .logout:hover { background: #e6730f !important; }
   
   .content { 
     flex: 1; 
-    padding: 20px; 
+    padding: 25px; 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     overflow-y: auto; 
+    background: rgba(248,249,250,0.9);
   }
+  
   .section { 
-    background: rgba(255,255,255,0.95); 
-    padding: 20px; 
-    border-radius: 8px; 
+    background: white; 
+    padding: 25px; 
+    border-radius: 12px; 
     width: 100%; 
-    max-width: 800px; 
-    margin-top: 15px; 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    max-width: 850px; 
+    margin-top: 20px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border-left: 5px solid var(--main-blue);
+  }
+  
+  .section h3 {
+    color: var(--main-blue);
+    border-bottom: 2px solid var(--sub-yellow);
+    padding-bottom: 10px;
+    margin-top: 0;
   }
   
   table { 
     border-collapse: collapse; 
     width: 100%; 
-    margin-top: 15px; 
+    margin-top: 20px; 
     overflow-x: auto;
   }
   table, th, td { 
-    border: 1px solid #ddd; 
+    border: 1px solid #dee2e6; 
     text-align: center; 
-    padding: 10px; 
+    padding: 12px; 
   }
-  th { background: #003366; color: white; }
+  th { 
+    background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); 
+    color: white; 
+    font-weight: bold;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+  
+  tr:hover {
+    background-color: #e9ecef;
+  }
   
   .schedule-box { 
     display: flex; 
     flex-wrap: wrap; 
-    gap: 10px; 
-    margin-top: 15px; 
+    gap: 15px; 
+    margin-top: 20px; 
   }
+  
   .schedule-box div { 
-    flex: 1 1 150px; 
-    background: #f5f5f5; 
-    border: 1px solid #ddd; 
-    padding: 15px; 
-    border-radius: 8px; 
+    flex: 1 1 180px; 
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+    border: 2px solid #dee2e6; 
+    padding: 18px; 
+    border-radius: 10px; 
     text-align: center; 
+    transition: all 0.3s;
+  }
+  
+  .schedule-box div:hover {
+    border-color: var(--main-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  }
+  
+  .schedule-box div strong {
+    color: var(--main-blue);
+    display: block;
+    margin-bottom: 8px;
   }
   
   .chatbox { 
-    border: 1px solid #ddd; 
+    border: 2px solid #dee2e6; 
     padding: 15px; 
-    height: 300px; 
+    height: 320px; 
     width: 100%; 
     overflow-y: auto; 
-    margin-top: 10px; 
-    border-radius: 5px; 
-    background: white;
+    margin-top: 12px; 
+    border-radius: 8px; 
+    background: #fafafa;
   }
-  .chat-message { margin-bottom: 10px; padding: 10px; border-radius: 5px; }
-  .chat-user { background: #e3f2fd; text-align: left; }
-  .chat-ai { background: #f3e5f5; text-align: left; }
+  
+  .chat-message { 
+    margin-bottom: 12px; 
+    padding: 12px; 
+    border-radius: 8px;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .chat-user { 
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); 
+    text-align: left; 
+    margin-left: 20%;
+  }
+  .chat-ai { 
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); 
+    text-align: left; 
+    margin-right: 20%;
+  }
   
   .id-card { 
-    background: linear-gradient(135deg, #8B0000 0%, #003366 100%); 
-    border: 3px solid #ffd700; 
-    border-radius: 15px; 
-    padding: 20px; 
+    background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); 
+    border: 4px solid var(--sub-yellow); 
+    border-radius: 18px; 
+    padding: 22px; 
     width: 100%; 
-    max-width: 350px; 
-    margin: 15px; 
+    max-width: 360px; 
+    margin: 18px; 
     display: inline-block; 
     vertical-align: top; 
     color: white;
     position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
+  
   .id-card-header { 
-    background: rgba(255,255,255,0.1); 
-    padding: 15px; 
+    background: rgba(255,255,255,0.12); 
+    padding: 18px; 
     text-align: center; 
-    border-radius: 10px 10px 0 0; 
-    margin: -20px -20px 15px -20px; 
-    border-bottom: 2px solid #ffd700;
+    border-radius: 12px 12px 0 0; 
+    margin: -22px -22px 18px -22px; 
+    border-bottom: 3px solid var(--sub-yellow);
   }
-  .id-card-header h3 { margin: 0; font-size: 16px; color: #ffd700; }
-  .id-card-header p { margin: 5px 0 0 0; font-size: 11px; color: #ccc; }
+  
+  .id-card-header h3 { 
+    margin: 0; 
+    font-size: 17px; 
+    color: var(--sub-yellow); 
+    letter-spacing: 1px;
+  }
+  
+  .id-card-header p { 
+    margin: 6px 0 0 0; 
+    font-size: 11px; 
+    color: #ddd; 
+  }
+  
   .id-card-photo { 
-    width: 100px; 
-    height: 100px; 
+    width: 110px; 
+    height: 110px; 
     background: #eee; 
     border-radius: 50%; 
-    margin: 10px auto; 
+    margin: 12px auto; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
     overflow: hidden; 
-    border: 4px solid #ffd700;
+    border: 5px solid var(--sub-yellow);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   }
-  .id-card-photo img { width: 100%; height: 100%; object-fit: cover; }
+  
+  .id-card-photo img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+  }
+  
   .id-card-info { 
     text-align: left; 
-    font-size: 13px; 
-    background: rgba(0,0,0,0.2); 
-    padding: 15px; 
-    border-radius: 10px;
+    font-size: 14px; 
+    background: rgba(0,0,0,0.25); 
+    padding: 18px; 
+    border-radius: 12px;
   }
-  .id-card-info p { margin: 8px 0; }
-  .id-card-info strong { color: #ffd700; }
+  
+  .id-card-info p { 
+    margin: 10px 0; 
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .id-card-info strong { 
+    color: var(--sub-yellow); 
+  }
+  
   .id-card-footer {
     text-align: center;
-    margin-top: 15px;
-    padding-top: 10px;
+    margin-top: 18px;
+    padding-top: 12px;
     border-top: 1px solid rgba(255,255,255,0.3);
     font-size: 10px;
     color: #ccc;
   }
+  
   .id-card-checkbox {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 25px;
-    height: 25px;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
     cursor: pointer;
+    accent-color: var(--sub-yellow);
   }
   
   .attendance-calendar { 
     display: grid; 
     grid-template-columns: repeat(7, 1fr); 
-    gap: 5px; 
-    margin-top: 15px; 
+    gap: 6px; 
+    margin-top: 18px; 
     overflow-x: auto;
   }
+  
   .attendance-day { 
-    padding: 12px 8px; 
+    padding: 14px 10px; 
     text-align: center; 
-    border: 1px solid #ddd; 
-    border-radius: 5px; 
-    min-width: 40px;
+    border: 2px solid #dee2e6; 
+    border-radius: 8px; 
+    min-width: 45px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: bold;
   }
-  .attendance-day.present { background: #d4edda; }
-  .attendance-day.absent { background: #f8d7da; }
+  
+  .attendance-day:hover {
+    transform: scale(1.1);
+    border-color: var(--main-blue);
+  }
+  
+  .attendance-day.present { 
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); 
+    border-color: #28a745;
+  }
+  
+  .attendance-day.absent { 
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); 
+    border-color: #dc3545;
+  }
+  
   .attendance-day.header { 
-    background: #003366; 
+    background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); 
     color: white; 
     font-weight: bold; 
-    padding: 10px;
+    padding: 12px;
+    cursor: default;
+  }
+  
+  .attendance-day.header:hover {
+    transform: none;
   }
   
   .subject-item { 
-    display: flex; 
-    align-items: center; 
-    padding: 10px; 
-    border: 1px solid #ddd; 
-    margin: 8px 0; 
-    border-radius: 5px; 
+    display:     align-items: center; 
+    padding: 12px; 
+    border: 2px solid #dee2e6; 
+    margin: 10px 0; 
+    border-radius: 8px; 
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
+    background: #fafafa;
   }
+  
+  .subject-item:hover {
+    border-color: var(--main-blue);
+    background: white;
+  }
+  
   .subject-item input[type="text"] { 
     flex: 1; 
-    min-width: 120px; 
+    min-width: 140px; 
     margin: 0; 
   }
   
   .planner-container { 
-    max-height: 400px; 
+    max-height: 450px; 
     overflow-y: auto; 
-    padding: 15px; 
-    border: 1px solid #ddd; 
-    border-radius: 8px; 
-    background: #f9f9f9; 
+    padding: 18px; 
+    border: 2px solid #dee2e6; 
+    border-radius: 10px; 
+    background: #f8f9fa; 
   }
-  .planner-section { margin-bottom: 20px; }
+  
+  .planner-section { margin-bottom: 25px; }
+  
   .planner-section h4 { 
-    background: linear-gradient(135deg, #8B0000 0%, #003366 100%); 
+    background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); 
     color: white; 
-    padding: 10px; 
-    margin: 0 0 10px 0; 
-    border-radius: 5px 5px 0 0; 
+    padding: 12px; 
+    margin: 0 0 12px 0; 
+    border-radius: 8px 8px 0 0; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
+  
   .planner-item { 
     display: flex; 
     align-items: center; 
-    padding: 10px; 
-    border: 1px solid #ddd; 
-    margin: 5px 0; 
-    border-radius: 5px; 
+    padding: 12px; 
+    border: 2px solid #dee2e6; 
+    margin: 8px 0; 
+    border-radius: 8px; 
     background: white; 
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
+    transition: all 0.2s;
   }
-  .planner-item input[type="checkbox"] { width: auto; margin: 0; }
-  .planner-item.completed { text-decoration: line-through; opacity: 0.6; }
-  .planner-item .goal-text { flex: 1; min-width: 150px; }
-  .planner-item .goal-time { font-size: 12px; color: #666; }
+  
+  .planner-item:hover {
+    border-color: var(--main-blue);
+  }
+  
+  .planner-item input[type="checkbox"] { 
+    width: auto; 
+    margin: 0; 
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    accent-color: var(--main-blue);
+  }
+  
+  .planner-item.completed { 
+    text-decoration: line-through; 
+    opacity: 0.6; 
+    background: #f0f0f0;
+  }
+  
+  .planner-item .goal-text { 
+    flex: 1; 
+    min-width: 180px; 
+  }
+  
+  .planner-item .goal-time { 
+    font-size: 13px; 
+    color: var(--main-gray);
+    background: #e9ecef;
+    padding: 4px 10px;
+    border-radius: 15px;
+  }
+  
   .planner-item .alarm-btn { 
     width: auto; 
-    padding: 6px 12px; 
-    font-size: 12px; 
-    background: #003366; 
+    padding: 8px 14px; 
+    font-size: 13px; 
+    background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); 
     color: white; 
+    border-radius: 20px;
   }
   
   .attendance-legend { 
     position: fixed; 
-    bottom: 20px; 
-    right: 20px; 
+    bottom: 25px; 
+    right: 25px; 
     background: white; 
-    padding: 15px; 
-    border-radius: 8px; 
-    box-shadow: 0 2px 15px rgba(0,0,0,0.2); 
+    padding: 18px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25); 
     z-index: 100;
-    border: 2px solid #003366;
+    border: 3px solid var(--main-blue);
+    min-width: 180px;
+  }
+  
+  .attendance-legend h4 {
+    margin: 0 0 12px 0;
+    color: var(--main-blue);
   }
   
   .performance-box {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); 
     color: white;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 15px 0;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 20px 0;
     text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
   }
-  .performance-stats { display: flex; justify-content: space-around; margin-top: 15px; }
-  .stat-item { text-align: center; }
-  .stat-number { font-size: 28px; font-weight: bold; }
-  .stat-label { font-size: 12px; opacity: 0.9; }
+  
+  .performance-box h3 {
+    color: var(--sub-yellow);
+    margin-top: 0;
+  }
+  
+  .performance-stats { 
+    display: flex; 
+    justify-content: space-around; 
+    margin-top: 20px; 
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .stat-item { 
+    text-align: center; 
+    background: rgba(255,255,255,0.15);
+    padding: 15px 25px;
+    border-radius: 10px;
+    min-width: 100px;
+  }
+  
+  .stat-number { 
+    font-size: 32px; 
+    font-weight: bold; 
+    color: var(--sub-yellow);
+  }
+  
+  .stat-label { 
+    font-size: 13px; 
+    opacity: 0.9; 
+    margin-top: 5px;
+  }
   
   .mood-selector {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin: 20px 0;
+    gap: 18px;
+    margin: 25px 0;
     flex-wrap: wrap;
   }
+  
   .mood-btn {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    border: 3px solid transparent;
-    font-size: 30px;
+    border: 4px solid transparent;
+    font-size: 35px;
     cursor: pointer;
     transition: all 0.3s;
     background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   }
-  .mood-btn:hover, .mood-btn.selected {
-    transform: scale(1.2);
-    border-color: #003366;
+  
+  .mood-btn:hover { 
+    transform: scale(1.15); 
+    border-color: var(--main-blue);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
   }
+  
   .mood-btn.selected {
-    box-shadow: 0 0 20px rgba(0,51,102,0.5);
+    transform: scale(1.2);
+    border-color: var(--sub-orange);
+    box-shadow: 0 0 25px rgba(253, 126, 20, 0.5);
   }
   
   .parent-account-card {
-    background: #f8f9fa;
-    border: 2px solid #003366;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 10px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 3px solid var(--main-blue);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px 0;
   }
+  
   .parent-account-card h4 {
-    color: #003366;
+    color: var(--main-blue);
     margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
+  
   .parent-account-card .credentials {
     background: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 12px;
+    border: 2px dashed var(--main-blue);
   }
+  
   .parent-account-card .credentials p {
-    margin: 5px 0;
-    font-family: monospace;
+    margin: 8px 0;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: var(--main-blue);
   }
   
   .print-controls {
-    background: #fff3cd;
-    padding: 15px;
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+    padding: 18px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 3px solid var(--sub-yellow);
+  }
+  
+  .print-controls h4 {
+    color: var(--main-gray);
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .school-map-container {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+  }
+  
+  .school-map-container h4 {
+    color: var(--main-blue);
+    text-align: center;
+    margin-top: 0;
+  }
+  
+  .school-map-container img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  
+  .map-legend {
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  
+  .map-legend-item {
+    background: white;
+    padding: 12px;
     border-radius: 8px;
-    margin-bottom: 15px;
-    border: 2px solid #ffc107;
+    border-left: 4px solid var(--main-red);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .map-legend-item strong {
+    color: var(--main-blue);
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .qr-scanner-container {
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 15px 0;
+    max-width: 400px;
+  }
+  
+  #qr-scanner video {
+    width: 100%;
+    display: block;
+  }
+  
+  .scanner-result {
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 12px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .scanner-result.success {
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+  }
+  
+  .scanner-result.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+  }
+  
+  .sem-selector {
+    display: flex;
+    gap: 12px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .sem-btn {
+    padding: 12px 24px;
+    border: 3px solid var(--main-blue);
+    background: white;
+    color: var(--main-blue);
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 140px;
+  }
+  
+  .sem-btn:hover {
+    background: var(--main-blue);
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .sem-btn.active {
+    background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%);
+    color: white;
+    border-color: var(--sub-yellow);
+  }
+  
+  .quarter-selector {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .quarter-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--main-gray);
+    background: white;
+    color: var(--main-gray);
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .quarter-btn:hover {
+    border-color: var(--main-blue);
+    color: var(--main-blue);
+  }
+  
+  .quarter-btn.active {
+    background: var(--main-blue);
+    color: white;
+    border-color: var(--main-blue);
+  }
+  
+  .school-welcome {
+    background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  }
+  
+  .school-welcome h2 {
+    margin: 0 0 10px 0;
+    color: var(--sub-yellow);
+  }
+  
+  .school-welcome p {
+    margin: 0;
+    opacity: 0.95;
   }
   
   @media (max-width: 768px) {
     .menu { 
       width: 85%; 
-      max-width: 320px; 
+      max-width: 340px; 
     }
+    
     .section { 
-      padding: 15px; 
-      margin-top: 10px; 
+      padding: 18px; 
+      margin-top: 12px; 
     }
+    
     .attendance-legend { 
       position: relative; 
       bottom: auto; 
       right: auto; 
-      margin-top: 15px; 
+      margin-top: 18px; 
       width: 100%; 
     }
+    
     .schedule-box div { flex: 1 1 100%; }
+    
     table { 
       display: block; 
       overflow-x: auto; 
       white-space: nowrap; 
     }
+    
     .id-card { 
       max-width: 100%; 
-      margin: 10px 0; 
+      margin: 12px 0; 
     }
+    
     .mood-selector {
-      gap: 10px;
+      gap: 12px;
     }
+    
     .mood-btn {
-      width: 50px;
-      height: 50px;
-      font-size: 24px;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
     }
+    
     .header {
-      padding-left: 50px;
+      padding-left: 55px;
+      font-size: 15px;
+    }
+    
+    .toggle-btn {
+      padding: 10px 14px;
       font-size: 14px;
     }
-    .toggle-btn {
-      padding: 8px 12px;
-      font-size: 14px;
+    
+    .box {
+      padding: 25px;
+    }
+    
+    .stat-number {
+      font-size: 26px;
     }
   }
   
@@ -473,6 +949,7 @@
     .menu, .toggle-btn, .header, .print-controls, .attendance-legend, .menu-overlay {
       display: none !important;
     }
+    
     .id-card { 
       break-inside: avoid; 
       page-break-inside: avoid; 
@@ -480,12 +957,15 @@
       display: inline-block;
       margin: 10px;
     }
+    
     .content {
       padding: 0;
     }
+    
     .section {
       box-shadow: none;
       padding: 10px;
+      border: none;
     }
   }
 </style>
@@ -495,42 +975,42 @@
 <body>
   
   <div class="login-wrapper">
-    <img src="https://i.ibb.co/F4DpWS4d/logo.png" alt="DSHS Logo" style="display:block; margin: 40px auto 5px; width:180px;">
+    <img src="https://i.ibb.co/F4DpWS4d/logo.png" alt="DSHS Logo" style="display:block; margin: 45px auto 8px; width:200px;">
   </div>
 
 <div class="login" id="login">
   <div class="box">
-    <h2>Login</h2>
-    <input type="text" id="loginUsername" placeholder="Username">
+    <h2>🎓 Login</h2>
+    <input type="text" id="loginUsername" placeholder="👤 Username">
     <div class="pass-wrapper">
-      <input type="password" id="loginPassword" placeholder="Password">
+      <input type="password" id="loginPassword" placeholder="🔒 Password">
       <span onclick="togglePassword()">👁️</span>
     </div>
-    <button onclick="login()">Login</button>
+    <button onclick="login()" style="background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); color: white; padding: 14px; font-size: 16px;">🚀 Login</button>
     <p id="msg"></p>
-    <p style="font-size margin-top:10:13px;px;">Don't have an account yet? <span class="signup-link" onclick="showSignup()">Sign up!</span></p>
+    <p style="font-size: 13px; margin-top: 12px;">Don't have an account yet? <span class="signup-link" onclick="showSignup()">Sign up!</span></p>
   </div>
 </div>
 
 <div class="login" id="signup" style="display:none;">
   <div class="box">
-    <h2>Student Sign Up</h2>
-    <input type="text" id="signupName" placeholder="Full Name">
-    <input type="text" id="signupID" placeholder="Student I.D">
-    <input type="text" id="signupSection" placeholder="Section">
-    <input type="text" id="signupTrack" placeholder="Track">
-    <input type="text" id="signupStrand" placeholder="Strand">
-    <input type="text" id="signupGradeLevel" placeholder="Grade Level">
-    <input type="text" id="signupUsername" placeholder="Username">
-    <input type="password" id="signupPass" placeholder="Password">
-    <button onclick="submitSignup()">Create Account</button>
-    <button onclick="clearSignup()">Clear</button>
-    <p style="font-size:13px; margin-top:10px;">Already have an account? <span class="signup-link" onclick="showLogin()">Login</span></p>
+    <h2>📝 Student Sign Up</h2>
+    <input type="text" id="signupName" placeholder="👤 Full Name">
+    <input type="text" id="signupID" placeholder="🆔 Student I.D">
+    <input type="text" id="signupSection" placeholder="🏫 Section">
+    <input type="text" id="signupTrack" placeholder="📚 Track">
+    <input type="text" id="signupStrand" placeholder="🎯 Strand">
+    <input type="text" id="signupGradeLevel" placeholder="📖 Grade Level">
+    <input type="text" id="signupUsername" placeholder="👤 Username">
+    <input type="password" id="signupPass" placeholder="🔒 Password">
+    <button onclick="submitSignup()" style="background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); color: white; padding: 14px; font-size: 16px;">✅ Create Account</button>
+    <button onclick="clearSignup()" style="background: var(--main-gray); color: white;">🔄 Clear</button>
+    <p style="font-size: 13px; margin-top: 12px;">Already have an account? <span class="signup-link" onclick="showLogin()">Login</span></p>
   </div>
 </div>
 
 <div class="dashboard" id="dashboard">
-  <button class="toggle-btn" onclick="toggleMenu()">
+  <button class="toggle-btn" id="toggleBtn" onclick="toggleMenu()">
     <span class="icon">☰</span>
     <span class="text">Menu</span>
   </button>
@@ -539,8 +1019,11 @@
   <div class="container">
     <div class="menu" id="menu"></div>
     <div class="content" id="content">
-      <img src="https://source.unsplash.com/800x400/?school" alt="School" class="school" style="max-width:100%;border-radius:10px;margin-bottom:20px;">
-      <div class="section"><h3>Welcome</h3><p>Select an option from the menu.</p></div>
+      <div class="school-welcome">
+        <h2>🏫 Dumingag Senior High School</h2>
+        <p>Welcome to the DSHS School System</p>
+      </div>
+      <div class="section"><h3>👋 Welcome</h3><p>Select an option from the menu to get started.</p></div>
     </div>
   </div>
 </div>
@@ -604,8 +1087,19 @@ function saveData(){
 
 //------ TOGGLE MENU ------
 function toggleMenu(){
-  document.getElementById("menu").classList.toggle("show");
-  document.getElementById("menuOverlay").classList.toggle("show");
+  const menu = document.getElementById("menu");
+  const overlay = document.getElementById("menuOverlay");
+  const toggleBtn = document.getElementById("toggleBtn");
+  
+  menu.classList.toggle("show");
+  overlay.classList.toggle("show");
+  
+  // Toggle between expanded and collapsed state
+  if (menu.classList.contains("show")) {
+    toggleBtn.classList.add("small");
+  } else {
+    toggleBtn.classList.remove("small");
+  }
 }
 
 //------ PASSWORD TOGGLE ------
@@ -637,26 +1131,79 @@ function loadDashboard(){
   document.getElementById("roleTitle").innerText = role.toUpperCase()+" DASHBOARD";
   const menu=document.getElementById("menu"); menu.innerHTML="";
   
-  let items = ["Attendance","Subject Schedule","My Info","Bulletin Board","School Map"];
-  if(role==="teacher") items = ["Attendance","Subject Schedule","My Info","Bulletin Board","Grades","Parent Chat","My Planner","Emergency Numbers","School Map"];
-  else if(role==="student") items = ["Attendance","Subject Schedule","My Info","Bulletin Board","Grades","QR Code","My Mood","Emergency Numbers","School Map"];
-  else if(role==="parent") items = ["Child Attendance","Child Grades","Child Schedule","My Info","Bulletin Board","Teacher Chat","Emergency Numbers","School Map"];
-  else if(role==="admin") items = ["Student Approval","Create Teacher","All Students","Parent Accounts","Manage Users","Bulletin Board","Emergency Numbers","School Map"];
+  let items = [
+    {name: "Attendance", icon: "📅"},
+    {name: "Subject Schedule", icon: "📚"},
+    {name: "My Info", icon: "👤"},
+    {name: "Bulletin Board", icon: "📢"},
+    {name: "School Map", icon: "🗺️"}
+  ];
+  
+  if(role==="teacher") {
+    items = [
+      {name: "Attendance", icon: "📅"},
+      {name: "Subject Schedule", icon: "📚"},
+      {name: "My Info", icon: "👤"},
+      {name: "Bulletin Board", icon: "📢"},
+      {name: "Grades", icon: "📊"},
+      {name: "Parent Chat", icon: "💬"},
+      {name: "My Planner", icon: "📝"},
+      {name: "Emergency Numbers", icon: "🚨"},
+      {name: "School Map", icon: "🗺️"}
+    ];
+  }
+  else if(role==="student") {
+    items = [
+      {name: "Attendance", icon: "📅"},
+      {name: "Subject Schedule", icon: "📚"},
+      {name: "My Info", icon: "👤"},
+      {name: "Bulletin Board", icon: "📢"},
+      {name: "Grades", icon: "📊"},
+      {name: "QR Code", icon: "🔳"},
+      {name: "My Mood", icon: "😊"},
+      {name: "Emergency Numbers", icon: "🚨"},
+      {name: "School Map", icon: "🗺️"}
+    ];
+  }
+  else if(role==="parent") {
+    items = [
+      {name: "Child Attendance", icon: "📅"},
+      {name: "Child Grades", icon: "📊"},
+      {name: "Child Schedule", icon: "📚"},
+      {name: "My Info", icon: "👤"},
+      {name: "Bulletin Board", icon: "📢"},
+      {name: "Teacher Chat", icon: "💬"},
+      {name: "Emergency Numbers", icon: "🚨"},
+      {name: "School Map", icon: "🗺️"}
+    ];
+  }
+  else if(role==="admin") {
+    items = [
+      {name: "Student Approval", icon: "✅"},
+      {name: "Create Teacher", icon: "👨‍🏫"},
+      {name: "All Students", icon: "👨‍🎓"},
+      {name: "Parent Accounts", icon: "👪"},
+      {name: "Manage Users", icon: "⚙️"},
+      {name: "Bulletin Board", icon: "📢"},
+      {name: "Emergency Numbers", icon: "🚨"},
+      {name: "School Map", icon: "🗺️"}
+    ];
+  }
 
-  menu.innerHTML = '<div class="menu-header"><h3>DSHS Menu</h3><p>' + currentUser + '</p></div>';
+  menu.innerHTML = '<div class="menu-header"><h3>🎓 DSHS Menu</h3><p>👤 ' + currentUser + '</p></div>';
   
   items.forEach(function(item){
     const btn=document.createElement("button");
-    btn.innerText = item;
+    btn.innerHTML = '<span class="tab-icon">' + item.icon + '</span> ' + item.name;
     btn.onclick=function() {
       toggleMenu();
-      loadSection(item);
+      loadSection(item.name);
     };
     menu.appendChild(btn);
   });
 
   const logoutBtn=document.createElement("button"); 
-  logoutBtn.innerText="⬅ Logout"; 
+  logoutBtn.innerHTML = '<span class="tab-icon">⬅</span> Logout'; 
   logoutBtn.className="logout"; 
   logoutBtn.onclick=function() {
     toggleMenu();
@@ -733,7 +1280,7 @@ function loadSection(tab){
 
   //------ ATTENDANCE ------
   if(tab==="Attendance" || tab==="Child Attendance"){
-    section.innerHTML="<h3>Attendance</h3>";
+    section.innerHTML="<h3>📅 Attendance</h3>";
     
     let studentName = currentUser;
     if(role === "teacher") {
@@ -791,15 +1338,22 @@ function loadSection(tab){
     if(role === "teacher") {
       const scannerDiv = document.createElement("div");
       scannerDiv.id = "qr-scanner";
+      scannerDiv.className = "qr-scanner-container";
       scannerDiv.style.marginTop = "20px";
       section.appendChild(scannerDiv);
+      
+      const scannerResult = document.createElement("div");
+      scannerResult.id = "scanner-result";
+      scannerResult.className = "scanner-result";
+      scannerResult.style.display = "none";
+      section.appendChild(scannerResult);
       
       setTimeout(function(){
         try {
           const html5QrCode = new Html5Qrcode("qr-scanner");
           html5QrCode.start(
             { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
+                      { fps: 10, qrbox: 250 },
             function(decodedText){
               const parts = decodedText.split("-");
               const scannedStudent = parts[0];
@@ -808,7 +1362,10 @@ function loadSection(tab){
               if(attendanceData[scannedStudent]) {
                 attendanceData[scannedStudent][today] = "P";
                 saveData();
-                resultDiv.innerHTML = "<span style='color:green;'>Marked " + scannedStudent + " present on " + today + "</span>";
+                const resultDiv = document.getElementById("scanner-result");
+                resultDiv.style.display = "block";
+                resultDiv.className = "scanner-result success";
+                resultDiv.innerHTML = "✅ Marked " + scannedStudent + " present on " + today;
                 renderAttendanceCalendar(section, studentName);
               }
               html5QrCode.stop();
@@ -816,9 +1373,21 @@ function loadSection(tab){
             function(errorMessage){}
           ).catch(function(err){
             console.log("Scanner error:", err);
+            const scannerResult = document.getElementById("scanner-result");
+            if(scannerResult) {
+              scannerResult.style.display = "block";
+              scannerResult.className = "scanner-result error";
+              scannerResult.innerHTML = "❌ Camera access denied or not available";
+            }
           });
         } catch(e) {
           console.log("Scanner initialization error:", e);
+          const scannerResult = document.getElementById("scanner-result");
+          if(scannerResult) {
+            scannerResult.style.display = "block";
+            scannerResult.className = "scanner-result error";
+            scannerResult.innerHTML = "❌ QR Scanner not supported on this device";
+          }
         }
       }, 500);
     }
@@ -826,7 +1395,28 @@ function loadSection(tab){
   
   //------ GRADES ------
   if(tab === "Grades" || tab === "Child Grades"){
-    section.innerHTML = "<h3>Grades</h3>";
+    section.innerHTML = "<h3>📊 Grades</h3>";
+    
+    // Semester Selector
+    const semSelector = document.createElement("div");
+    semSelector.className = "sem-selector";
+    semSelector.innerHTML = `
+      <button class="sem-btn active" onclick="selectSemester(1, this)">1st Semester</button>
+      <button class="sem-btn" onclick="selectSemester(2, this)">2nd Semester</button>
+    `;
+    section.appendChild(semSelector);
+    
+    // Quarter Selector
+    const quarterSelector = document.createElement("div");
+    quarterSelector.className = "quarter-selector";
+    quarterSelector.id = "quarterSelector";
+    quarterSelector.innerHTML = `
+      <button class="quarter-btn active" onclick="selectQuarter(1, this)">1st Quarter</button>
+      <button class="quarter-btn" onclick="selectQuarter(2, this)">2nd Quarter</button>
+      <button class="quarter-btn" onclick="selectQuarter(3, this)">3rd Quarter</button>
+      <button class="quarter-btn" onclick="selectQuarter(4, this)">4th Quarter</button>
+    `;
+    section.appendChild(quarterSelector);
     
     let studentName = currentUser;
     if(role === "teacher") {
@@ -860,7 +1450,7 @@ function loadSection(tab){
   
   //------ SUBJECT SCHEDULE ------
   if(tab === "Subject Schedule" || tab === "Child Schedule"){
-    section.innerHTML = "<h3>Subject Schedule</h3>";
+    section.innerHTML = "<h3>📚 Subject Schedule</h3>";
     
     let studentName = currentUser;
     if(role === "parent") {
@@ -889,7 +1479,7 @@ function loadSection(tab){
         item.className = "subject-item";
         item.innerHTML = '<input type="text" value="' + sub + '" onchange="updateSubject(' + index + ', this.value)">' +
           '<input type="text" value="' + (scheduleTimes[sub] || '') + '" placeholder="Time" onchange="updateScheduleTime(\'' + sub + '\', this.value)">' +
-          '<button onclick="deleteSubject(' + index + ')" style="width:auto;background:#dc3545;color:white;">Delete</button>';
+          '<button onclick="deleteSubject(' + index + ')" style="width:auto;background:#dc3545;color:white;">🗑️ Delete</button>';
         section.appendChild(item);
       });
       
@@ -897,23 +1487,30 @@ function loadSection(tab){
       addDiv.className = "subject-item";
       addDiv.innerHTML = '<input type="text" id="newSubjectName" placeholder="New Subject">' +
         '<input type="text" id="newSubjectTime" placeholder="Time">' +
-        '<button onclick="addSubject()" style="width:auto;background:#28a745;color:white;">Add</button>';
+        '<button onclick="addSubject()" style="width:auto;background:#28a745;color:white;">➕ Add</button>';
       section.appendChild(addDiv);
     }
   }
 
   //------ QR CODE ------
   if(tab === "QR Code" && role === "student"){
-    section.innerHTML = "<h3>Your QR Code</h3>";
+    section.innerHTML = "<h3>🔳 Your QR Code</h3>";
     const qrDiv = document.createElement("div");
     qrDiv.id = "qr-code";
+    qrDiv.style.textAlign = "center";
+    qrDiv.style.padding = "20px";
     section.appendChild(qrDiv);
+    
+    const qrCodeData = currentUser + "-" + new Date().toISOString().split("T")[0];
     new QRCode(qrDiv, {
-      text: currentUser + "-" + new Date().toISOString().split("T")[0],
+      text: qrCodeData,
       width: 200,
-      height: 200
+      height: 200,
+      colorDark: "#003366",
+      colorLight: "#ffffff"
     });
-    section.innerHTML += "<p>Scan this QR code for attendance</p>";
+    
+    section.innerHTML += "<p style='text-align:center;margin-top:15px;'>📱 Scan this QR code for attendance</p>";
     
     //------ PERFORMANCE BOX ------
     const perfBox = document.createElement("div");
@@ -923,18 +1520,18 @@ function loadSection(tab){
     const absentDays = totalDays - presentDays;
     const percentage = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
     
-    perfBox.innerHTML = "<h3>Your Attendance Performance</h3>" +
+    perfBox.innerHTML = "<h3>📈 Your Attendance Performance</h3>" +
       "<div class='performance-stats'>" +
-      "<div class='stat-item'><div class='stat-number'>" + presentDays + "</div><div class='stat-label'>Present</div></div>" +
-      "<div class='stat-item'><div class='stat-number'>" + absentDays + "</div><div class='stat-label'>Absent</div></div>" +
-      "<div class='stat-item'><div class='stat-number'>" + percentage + "%</div><div class='stat-label'>Rate</div></div>" +
+      "<div class='stat-item'><div class='stat-number'>" + presentDays + "</div><div class='stat-label'>✅ Present</div></div>" +
+      "<div class='stat-item'><div class='stat-number'>" + absentDays + "</div><div class='stat-label'>❌ Absent</div></div>" +
+      "<div class='stat-item'><div class='stat-number'>" + percentage + "%</div><div class='stat-label'>📊 Rate</div></div>" +
       "</div>";
     section.appendChild(perfBox);
   }
 
   //------ CHAT ------
   if(tab === "Parent Chat" || tab === "Teacher Chat"){
-    section.innerHTML = "<h3>" + tab + "</h3>";
+    section.innerHTML = "<h3>💬 " + tab + "</h3>";
     
     if(tab === "Parent Chat" && role === "teacher") {
       section.innerHTML += "<label>Select Parent:</label>";
@@ -979,7 +1576,7 @@ function loadSection(tab){
     const chatbox = document.createElement("div");
     chatbox.id = "chatbox";
     chatbox.className = "chatbox";
-    chatbox.innerHTML = "<p>Chat messages will appear here...</p>";
+    chatbox.innerHTML = "<p>💬 Chat messages will appear here...</p>";
     section.appendChild(chatbox);
     
     const input = document.createElement("input");
@@ -989,14 +1586,14 @@ function loadSection(tab){
     section.appendChild(input);
     
     const sendBtn = document.createElement("button");
-    sendBtn.innerText = "Send";
+    sendBtn.innerText = "📤 Send";
     sendBtn.onclick = function() { sendChatMessage(tab); };
     section.appendChild(sendBtn);
   }
 
   //------ MY INFO ------
   if(tab === "My Info"){
-    section.innerHTML = "<h3>My Information</h3>";
+    section.innerHTML = "<h3>👤 My Information</h3>";
     
     let user = null;
     
@@ -1011,12 +1608,12 @@ function loadSection(tab){
     }
     
     if(user) {
-      section.innerHTML += '<div style="text-align:center;margin-bottom:15px;">' +
-        '<div class="id-card-photo" style="width:100px;height:100px;margin:0 auto 10px;">' +
-        '<img id="profilePic" src="' + (user.pic || '') + '" alt="Profile Photo" onerror="this.src=\'https://via.placeholder.com/100\'">' +
+      section.innerHTML += '<div style="text-align:center;margin-bottom:20px;">' +
+        '<div class="id-card-photo" style="width:120px;height:120px;margin:0 auto 15px;">' +
+        '<img id="profilePic" src="' + (user.pic || '') + '" alt="Profile Photo" onerror="this.src=\'https://via.placeholder.com/120\'">' +
         '</div>' +
         '<input type="file" id="uploadPic" accept="image/*" style="width:auto;">' +
-        '<button onclick="uploadProfilePhoto()" style="width:auto;background:#003366;color:white;">Upload Photo</button>' +
+        '<button onclick="uploadProfilePhoto()" style="width:auto;background:linear-gradient(135deg, #8B0000 0%, #003366 100%);color:white;padding:10px 20px;">📷 Upload Photo</button>' +
         '</div>' +
         '<div class="id-card-info">' +
         '<p><strong>Name:</strong> ' + user.name + '</p>' +
@@ -1029,29 +1626,31 @@ function loadSection(tab){
         '<p><strong>Position:</strong> ' + (user.position || '-') + '</p>' +
         '</div>';
     } else {
-      section.innerHTML += "<p>User information not found.</p>";
+      section.innerHTML += "<p>❌ User information not found.</p>";
     }
   }
 
   //------ BULLETIN BOARD ------
   if(tab === "Bulletin Board"){
-    section.innerHTML = "<h3>Bulletin Board</h3>";
+    section.innerHTML = "<h3>📢 Bulletin Board</h3>";
     
     const board = document.createElement("div");
     bulletinBoard.forEach(function(msg, index){
       const msgDiv = document.createElement("div");
-      msgDiv.style.padding = "15px";
-      msgDiv.style.borderBottom = "1px solid #ddd";
-      msgDiv.style.marginBottom = "10px";
+      msgDiv.style.padding = "18px";
+      msgDiv.style.borderBottom = "2px solid #ddd";
+      msgDiv.style.marginBottom = "12px";
+      msgDiv.style.borderRadius = "8px";
+      msgDiv.style.background = "#f8f9fa";
       msgDiv.innerHTML = "<p>" + msg + "</p>";
       
       if(role === "teacher" || role === "admin") {
         const deleteBtn = document.createElement("button");
-        deleteBtn.innerText = "Delete";
+        deleteBtn.innerText = "🗑️ Delete";
         deleteBtn.style.width = "auto";
         deleteBtn.style.background = "#dc3545";
         deleteBtn.style.color = "white";
-        deleteBtn.style.padding = "6px 12px";
+        deleteBtn.style.padding = "8px 15px";
         deleteBtn.onclick = function() {
           bulletinBoard.splice(index, 1);
           saveData();
@@ -1071,8 +1670,8 @@ function loadSection(tab){
       section.appendChild(newMsg);
       
       const addBtn = document.createElement("button");
-      addBtn.innerText = "Add Announcement";
-      addBtn.style.background = "#003366";
+      addBtn.innerText = "➕ Add Announcement";
+      addBtn.style.background = "linear-gradient(135deg, #8B0000 0%, #003366 100%)";
       addBtn.style.color = "white";
       addBtn.onclick = function() {
         if(newMsg.value.trim()) {
@@ -1089,23 +1688,24 @@ function loadSection(tab){
   if(role === "admin"){
     //------ STUDENT APPROVAL ------
     if(tab === "Student Approval"){
-      section.innerHTML = "<h3>Approve Students</h3>";
+      section.innerHTML = "<h3>✅ Approve Students</h3>";
       const pendingStudents = students.filter(function(s){ return !s.approved; });
       
       if(pendingStudents.length === 0) {
-        section.innerHTML += "<p>No pending approvals.</p>";
+        section.innerHTML += "<p>✅ No pending approvals.</p>";
       } else {
         pendingStudents.forEach(function(s){
           const div = document.createElement("div");
-          div.style.padding = "15px";
-          div.style.border = "1px solid #ddd";
-          div.style.marginBottom = "10px";
-          div.style.borderRadius = "8px";
-          div.innerHTML = '<p><strong>Name:</strong> ' + s.name + '</p>' +
-            '<p><strong>ID:</strong> ' + s.id + '</p>' +
-            '<p><strong>Section:</strong> ' + s.section + '</p>' +
-            '<button onclick="approveStudent(\'' + s.id + '\')" style="background:#28a745;color:white;width:auto;padding:10px 20px;margin-right:10px;">Approve</button>' +
-            '<button onclick="deleteStudent(\'' + s.id + '\')" style="background:#dc3545;color:white;width:auto;padding:10px 20px;">Delete</button>';
+          div.style.padding = "18px";
+          div.style.border = "2px solid #ddd";
+          div.style.marginBottom = "12px";
+          div.style.borderRadius = "10px";
+          div.style.background = "#fff3cd";
+          div.innerHTML = '<p><strong>👤 Name:</strong> ' + s.name + '</p>' +
+            '<p><strong>🆔 ID:</strong> ' + s.id + '</p>' +
+            '<p><strong>🏫 Section:</strong> ' + s.section + '</p>' +
+            '<button onclick="approveStudent(\'' + s.id + '\')" style="background:#28a745;color:white;width:auto;padding:12px 24px;margin-right:10px;">✅ Approve</button>' +
+            '<button onclick="deleteStudent(\'' + s.id + '\')" style="background:#dc3545;color:white;width:auto;padding:12px 24px;">🗑️ Delete</button>';
           section.appendChild(div);
         });
       }
@@ -1113,33 +1713,33 @@ function loadSection(tab){
     
     //------ CREATE TEACHER ------
     if(tab === "Create Teacher"){
-      section.innerHTML = "<h3>Create Teacher Account</h3>";
-      section.innerHTML += '<input type="text" id="newTeacherName" placeholder="Full Name">' +
-        '<input type="text" id="newTeacherID" placeholder="Teacher ID">' +
-        '<input type="text" id="newTeacherPosition" placeholder="Position">' +
-        '<input type="text" id="newTeacherSection" placeholder="Section Handled">' +
-        '<input type="text" id="newTeacherUsername" placeholder="Username">' +
-        '<input type="password" id="newTeacherPassword" placeholder="Password">' +
-        '<button onclick="createTeacher()" style="background:#003366;color:white;">Create Teacher</button>';
+      section.innerHTML = "<h3>👨‍🏫 Create Teacher Account</h3>";
+      section.innerHTML += '<input type="text" id="newTeacherName" placeholder="👤 Full Name">' +
+        '<input type="text" id="newTeacherID" placeholder="🆔 Teacher ID">' +
+        '<input type="text" id="newTeacherPosition" placeholder="💼 Position">' +
+        '<input type="text" id="newTeacherSection" placeholder="🏫 Section Handled">' +
+        '<input type="text" id="newTeacherUsername" placeholder="👤 Username">' +
+        '<input type="password" id="newTeacherPassword" placeholder="🔒 Password">' +
+        '<button onclick="createTeacher()" style="background:linear-gradient(135deg, #8B0000 0%, #003366 100%);color:white;padding:14px;">👨‍🏫 Create Teacher</button>';
     }
     
     //------ ALL STUDENTS (PRINT ID) ------
     if(tab === "All Students"){
-      section.innerHTML = "<h3>All Students</h3>";
+      section.innerHTML = "<h3>👨‍🎓 All Students</h3>";
       
       // Print controls
       const printControls = document.createElement("div");
       printControls.className = "print-controls";
       printControls.innerHTML = '<h4>🖨️ Print ID Cards</h4>' +
         '<p>Check the students you want to print, then click Print Selected.</p>' +
-        '<label><input type="checkbox" id="selectAllStudents" onchange="toggleSelectAllStudents()" style="width:auto;"> Select All</label><br><br>' +
-        '<button onclick="printSelectedIDs()" style="background:#28a745;color:white;width:auto;padding:10px 20px;">🖨️ Print Selected</button>';
+        '<label><input type="checkbox" id="selectAllStudents" onchange="toggleSelectAllStudents()" style="width:auto;"> ✅ Select All</label><br><br>' +
+        '<button onclick="printSelectedIDs()" style="background:#28a745;color:white;width:auto;padding:12px 24px;">🖨️ Print Selected</button>';
       section.appendChild(printControls);
       
       // Filter by section
       const filterSection = document.createElement("select");
       filterSection.id = "filterSection";
-      filterSection.innerHTML = "<option value='all'>All Sections</option>";
+      filterSection.innerHTML = "<option value='all'>📋 All Sections</option>";
       const sections = [...new Set(students.map(function(s){ return s.section; }))];
       sections.forEach(function(sec){
         const opt = document.createElement("option");
@@ -1162,13 +1762,13 @@ function loadSection(tab){
     
     //------ PARENT ACCOUNTS ------
     if(tab === "Parent Accounts"){
-      section.innerHTML = "<h3>Parent Accounts</h3>";
-      section.innerHTML += "<p>These credentials are auto-generated when students sign up. Share with advisers to give to parents.</p>";
+      section.innerHTML = "<h3>👪 Parent Accounts</h3>";
+      section.innerHTML += "<p>📝 These credentials are auto-generated when students sign up. Share with advisers to give to parents.</p>";
       
       // Filter by section
       const filterSection = document.createElement("select");
       filterSection.id = "filterParentSection";
-      filterSection.innerHTML = "<option value='all'>All Sections</option>";
+      filterSection.innerHTML = "<option value='all'>📋 All Sections</option>";
       const sections = [...new Set(students.map(function(s){ return s.section; }))];
       sections.forEach(function(sec){
         const opt = document.createElement("option");
@@ -1191,28 +1791,28 @@ function loadSection(tab){
     
     //------ MANAGE USERS ------
     if(tab === "Manage Users"){
-      section.innerHTML = "<h3>Manage Users</h3>";
+      section.innerHTML = "<h3>⚙️ Manage Users</h3>";
       
       // Students
-      section.innerHTML += "<h4>Students</h4>";
+      section.innerHTML += "<h4>👨‍🎓 Students</h4>";
       const studentsTable = document.createElement("table");
       studentsTable.innerHTML = "<tr><th>Name</th><th>ID</th><th>Section</th><th>Action</th></tr>";
       students.forEach(function(s){
         const tr = document.createElement("tr");
         tr.innerHTML = '<td>' + s.name + '</td><td>' + s.id + '</td><td>' + s.section + '</td>' +
-          '<td><button onclick="deleteStudent(\'' + s.id + '\')" style="background:#dc3545;color:white;width:auto;padding:5px 10px;">Delete</button></td>';
+          '<td><button onclick="deleteStudent(\'' + s.id + '\')" style="background:#dc3545;color:white;width:auto;padding:6px 12px;">🗑️ Delete</button></td>';
         studentsTable.appendChild(tr);
       });
       section.appendChild(studentsTable);
       
       // Teachers
-      section.innerHTML += "<h4 style='margin-top:20px;'>Teachers</h4>";
+      section.innerHTML += "<h4 style='margin-top:25px;'>👨‍🏫 Teachers</h4>";
       const teachersTable = document.createElement("table");
       teachersTable.innerHTML = "<tr><th>Name</th><th>ID</th><th>Section</th><th>Action</th></tr>";
       teachers.forEach(function(t){
         const tr = document.createElement("tr");
         tr.innerHTML = '<td>' + t.name + '</td><td>' + t.id + '</td><td>' + t.sectionHandled + '</td>' +
-          '<td><button onclick="deleteTeacher(\'' + t.id + '\')" style="background:#dc3545;color:white;width:auto;padding:5px 10px;">Delete</button></td>';
+          '<td><button onclick="deleteTeacher(\'' + t.id + '\')" style="background:#dc3545;color:white;width:auto;padding:6px 12px;">🗑️ Delete</button></td>';
         teachersTable.appendChild(tr);
       });
       section.appendChild(teachersTable);
@@ -1221,7 +1821,7 @@ function loadSection(tab){
   
   //------ MY PLANNER (TEACHER ONLY) ------
   if(tab === "My Planner" && role === "teacher"){
-    section.innerHTML = "<h3>My Planner</h3>";
+    section.innerHTML = "<h3>📝 My Planner</h3>";
     
     if(!plannerData[currentUser]) {
       plannerData[currentUser] = { daily: [], weekly: [], monthly: [] };
@@ -1233,7 +1833,7 @@ function loadSection(tab){
     // Daily Goals
     const dailySection = document.createElement("div");
     dailySection.className = "planner-section";
-    dailySection.innerHTML = "<h4>Daily Goals</h4>";
+    dailySection.innerHTML = "<h4>📅 Daily Goals</h4>";
     plannerData[currentUser].daily.forEach(function(goal, index){
       const item = document.createElement("div");
       item.className = "planner-item" + (goal.completed ? " completed" : "");
@@ -1241,48 +1841,48 @@ function loadSection(tab){
         '<span class="goal-text">' + goal.text + '</span>' +
         '<span class="goal-time">' + (goal.time || "") + '</span>' +
         '<button class="alarm-btn" onclick="setAlarm(\'' + goal.time + '\')">⏰</button>' +
-        '<button onclick="deletePlannerGoal(\'daily\', ' + index + ')" style="width:auto;background:#dc3545;color:white;padding:4px 8px;">×</button>';
+        '<button onclick="deletePlannerGoal(\'daily\', ' + index + ')" style="width:auto;background:#dc3545;color:white;padding:6px 10px;">×</button>';
       dailySection.appendChild(item);
     });
-    dailySection.innerHTML += '<input type="text" id="dailyGoalInput" placeholder="Add daily goal..." style="width:60%;">' +
+    dailySection.innerHTML += '<input type="text" id="dailyGoalInput" placeholder="Add daily goal..." style="width:55%;">' +
       '<input type="time" id="dailyGoalTime" style="width:auto;">' +
-      '<button onclick="addPlannerGoal(\'daily\')" style="width:auto;background:#28a745;color:white;">Add</button>';
+      '<button onclick="addPlannerGoal(\'daily\')" style="width:auto;background:#28a745;color:white;">➕ Add</button>';
     plannerContainer.appendChild(dailySection);
     
     // Weekly Goals
     const weeklySection = document.createElement("div");
     weeklySection.className = "planner-section";
-    weeklySection.innerHTML = "<h4>Weekly Goals</h4>";
+    weeklySection.innerHTML = "<h4>📆 Weekly Goals</h4>";
     plannerData[currentUser].weekly.forEach(function(goal, index){
       const item = document.createElement("div");
       item.className = "planner-item" + (goal.completed ? " completed" : "");
       item.innerHTML = '<input type="checkbox"' + (goal.completed ? " checked" : "") + ' onchange="togglePlannerGoal(\'weekly\', ' + index + ')">' +
         '<span class="goal-text">' + goal.text + '</span>' +
         '<span class="goal-time">' + (goal.time || "") + '</span>' +
-        '<button onclick="deletePlannerGoal(\'weekly\', ' + index + ')" style="width:auto;background:#dc3545;color:white;padding:4px 8px;">×</button>';
+        '<button onclick="deletePlannerGoal(\'weekly\', ' + index + ')" style="width:auto;background:#dc3545;color:white;padding:6px 10px;">×</button>';
       weeklySection.appendChild(item);
     });
-    weeklySection.innerHTML += '<input type="text" id="weeklyGoalInput" placeholder="Add weekly goal..." style="width:60%;">' +
+    weeklySection.innerHTML += '<input type="text" id="weeklyGoalInput" placeholder="Add weekly goal..." style="width:55%;">' +
       '<input type="date" id="weeklyGoalDate" style="width:auto;">' +
-      '<button onclick="addPlannerGoal(\'weekly\')" style="width:auto;background:#28a745;color:white;">Add</button>';
+      '<button onclick="addPlannerGoal(\'weekly\')" style="width:auto;background:#28a745;color:white;">➕ Add</button>';
     plannerContainer.appendChild(weeklySection);
     
     // Monthly Goals
     const monthlySection = document.createElement("div");
     monthlySection.className = "planner-section";
-    monthlySection.innerHTML = "<h4>Monthly Goals</h4>";
+    monthlySection.innerHTML = "<h4>📆 Monthly Goals</h4>";
     plannerData[currentUser].monthly.forEach(function(goal, index){
       const item = document.createElement("div");
       item.className = "planner-item" + (goal.completed ? " completed" : "");
       item.innerHTML = '<input type="checkbox"' + (goal.completed ? " checked" : "") + ' onchange="togglePlannerGoal(\'monthly\', ' + index + ')">' +
         '<span class="goal-text">' + goal.text + '</span>' +
         '<span class="goal-time">' + (goal.time || "") + '</span>' +
-        '<button onclick="deletePlannerGoal(\'monthly\', ' + index + ')" style="width:auto;background:#dc3545;color:white;padding:4px 8px;">×</button>';
+        '<button onclick="deletePlannerGoal(\'monthly\', ' + index + ')" style="width:auto;background:#dc3545;color:white;padding:6px 10px;">×</button>';
       monthlySection.appendChild(item);
     });
-    monthlySection.innerHTML += '<input type="text" id="monthlyGoalInput" placeholder="Add monthly goal..." style="width:60%;">' +
+    monthlySection.innerHTML += '<input type="text" id="monthlyGoalInput" placeholder="Add monthly goal..." style="width:55%;">' +
       '<input type="date" id="monthlyGoalDate" style="width:auto;">' +
-      '<button onclick="addPlannerGoal(\'monthly\')" style="width:auto;background:#28a745;color:white;">Add</button>';
+      '<button onclick="addPlannerGoal(\'monthly\')" style="width:auto;background:#28a745;color:white;">➕ Add</button>';
     plannerContainer.appendChild(monthlySection);
     
     section.appendChild(plannerContainer);
@@ -1304,11 +1904,11 @@ function loadSection(tab){
       '<button class="mood-btn" onclick="selectMood(\'🤗\')">🤗</button>';
     section.appendChild(moodDiv);
     
-    const chatbox = document.createElement("div");
+        const chatbox = document.createElement("div");
     chatbox.id = "moodChatbox";
     chatbox.className = "chatbox";
     chatbox.style.background = "#f0f8ff";
-    chatbox.innerHTML = '<div class="chat-message chat-ai"><strong>AI Companion:</strong> Hi! How are you feeling today? You can select a mood above or just tell me what\'s on your mind.</div>';
+    chatbox.innerHTML = '<div class="chat-message chat-ai"><strong>🤗 AI Companion:</strong> Hi! How are you feeling today? You can select a mood above or just tell me what\'s on your mind.</div>';
     section.appendChild(chatbox);
     
     const input = document.createElement("input");
@@ -1324,24 +1924,24 @@ function loadSection(tab){
     sendBtn.onclick = function() { sendMoodMessage(); };
     section.appendChild(sendBtn);
     
-    section.innerHTML += '<div style="margin-top:15px;padding:10px;background:#fff3cd;border-radius:5px;font-size:12px;">' +
+    section.innerHTML += '<div style="margin-top:18px;padding:15px;background:#fff3cd;border-radius:8px;font-size:13px;">' +
       '<strong>💡 Tips:</strong> Talk about your feelings! I\'m here to listen and help.' +
       '</div>';
   }
   
   //------ EMERGENCY NUMBERS ------
   if(tab === "Emergency Numbers"){
-    section.innerHTML = "<h3>Emergency Numbers</h3>";
+    section.innerHTML = "<h3>🚨 Emergency Numbers</h3>";
     const numbers = [
-      {name:"PNP DUMINGAG", num:"099859558677"},
-      {name:"BFP DUMINGAG", num:"09300459871"},
-      {name:"LGU DUMINGAG", num:"09482121024"},
-      {name:"MDRRMO DUMINGAG", num:"09098046609"}
+      {name:"🚔 PNP DUMINGAG", num:"099859558677"},
+      {name:"🔥 BFP DUMINGAG", num:"09300459871"},
+      {name:"🏛️ LGU DUMINGAG", num:"09482121024"},
+      {name:"🆘 MDRRMO DUMINGAG", num:"09098046609"}
     ];
     numbers.forEach(function(n){
       const div = document.createElement("div");
-      div.style.margin = "10px 0";
-      div.innerHTML = '<a href="tel:' + n.num + '" style="display:block;padding:15px;background:#f8f9fa;border-radius:8px;border-left:4px solid #dc3545;text-decoration:none;color:#333;">' +
+      div.style.margin = "12px 0";
+      div.innerHTML = '<a href="tel:' + n.num + '" style="display:block;padding:18px;background:linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);border-radius:10px;border-left:5px solid #dc3545;text-decoration:none;color:#333;transition:all 0.3s;">' +
         '<strong>' + n.name + '</strong><br>' + n.num + '</a>';
       section.appendChild(div);
     });
@@ -1349,18 +1949,49 @@ function loadSection(tab){
   
   //------ SCHOOL MAP ------
   if(tab === "School Map"){
-    section.innerHTML = "<h3>School Map</h3>";
-    section.innerHTML += '<div style="background:#f5f5f5;padding:20px;border-radius:10px;text-align:center;">' +
-      '<h4>🏫 DSHS Campus Layout</h4>' +
-      '<p><strong>Building A</strong> - Main Entrance & Administration</p>' +
-      '<p><strong>Building B</strong> - Classrooms 12-A, 12-B, 12-C</p>' +
-      '<p><strong>Building C</strong> - Science Laboratory</p>' +
-      '<p><strong>Building D</strong> - Library & Computer Room</p>' +
-      '<p><strong>Building E</strong> - Faculty Room</p>' +
-      '<p><strong>Gymnasium</strong> - Physical Education Activities</p>' +
-      '<p><strong>Cafeteria</strong> - Student Lounge</p>' +
-      '<p><strong>Guidance Office</strong> - Counseling Services</p>' +
-      '</div>';
+    section.innerHTML = "<h3>🗺️ School Map</h3>";
+    
+    const mapContainer = document.createElement("div");
+    mapContainer.className = "school-map-container";
+    mapContainer.innerHTML = `
+      <h4>🏫 DSHS Campus Layout</h4>
+      <img src="https://ibb.co/hxG306gd" alt="DSHS School Map" style="max-width:100%;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,0.2);">
+      <div class="map-legend">
+        <div class="map-legend-item">
+          <strong>🏢 Building A</strong>
+          Main Entrance & Administration
+        </div>
+        <div class="map-legend-item">
+          <strong>🏫 Building B</strong>
+          Classrooms 12-A, 12-B, 12-C
+        </div>
+        <div class="map-legend-item">
+          <strong>🔬 Building C</strong>
+          Science Laboratory
+        </div>
+        <div class="map-legend-item">
+          <strong>📚 Building D</strong>
+          Library & Computer Room
+        </div>
+        <div class="map-legend-item">
+          <strong>👨‍🏫 Building E</strong>
+          Faculty Room
+        </div>
+        <div class="map-legend-item">
+          <strong>🏀 Gymnasium</strong>
+          Physical Education Activities
+        </div>
+        <div class="map-legend-item">
+          <strong>🍽️ Cafeteria</strong>
+          Student Lounge
+        </div>
+        <div class="map-legend-item">
+          <strong>💼 Guidance Office</strong>
+          Counseling Services
+        </div>
+      </div>
+    `;
+    section.appendChild(mapContainer);
   }
   
   content.appendChild(section);
@@ -1408,10 +2039,10 @@ function renderAttendanceCalendar(container, studentName) {
     const status = attendanceData[studentName] ? attendanceData[studentName][dateStr] : null;
     if(status === "P") {
       div.classList.add("present");
-      div.innerHTML += " ✓";
+      div.innerHTML += " ✅";
     } else if(status === "A") {
       div.classList.add("absent");
-      div.innerHTML += " ✗";
+      div.innerHTML += " ❌";
     }
     
     div.onclick = function(){
@@ -1437,10 +2068,10 @@ function renderAttendanceCalendar(container, studentName) {
   // Legend
   const legend = document.createElement("div");
   legend.className = "attendance-legend";
-  legend.innerHTML = "<p><strong>Legend:</strong></p>" +
-    "<p style='color:green;'>✓ Present</p>" +
-    "<p style='color:red;'>✗ Absent</p>" +
-    "<p style='font-size:11px;color:#666;'>" + ((role === "teacher" || role === "admin") ? "Click to toggle" : "View only") + "</p>";
+  legend.innerHTML = "<h4>📋 Legend</h4>" +
+    "<p style='color:green;'>✅ Present</p>" +
+    "<p style='color:red;'>❌ Absent</p>" +
+    "<p style='font-size:12px;color:#666;margin-top:10px;'>" + ((role === "teacher" || role === "admin") ? "👆 Click to toggle" : "👁️ View only") + "</p>";
   container.appendChild(legend);
 }
 
@@ -1451,7 +2082,7 @@ function renderGradesTable(container, studentName) {
   
   const table = document.createElement("table");
   table.id = "gradesTable";
-  table.innerHTML = "<tr><th>Subject</th><th>Grade</th><th>Status</th></tr>";
+  table.innerHTML = "<tr><th>📚 Subject</th><th>📊 Grade</th><th>📈 Status</th></tr>";
   
   let total = 0;
   let count = 0;
@@ -1462,8 +2093,8 @@ function renderGradesTable(container, studentName) {
     total += grade;
     count++;
     
-    let status = "Passing";
-    if(grade < 75) status = "Needs Improvement";
+    let status = "✅ Passing";
+    if(grade < 75) status = "⚠️ Needs Improvement";
     
     const editable = (role === "teacher" || role === "admin") ? "contenteditable" : "";
     const onblur = (role === "teacher" || role === "admin") ? " onblur=\"updateGrade('" + studentName + "', '" + sub + "', this.innerText)\"" : "";
@@ -1473,7 +2104,7 @@ function renderGradesTable(container, studentName) {
   });
   
   const avgRow = document.createElement("tr");
-  avgRow.innerHTML = "<td><strong>Average</strong></td><td><strong>" + (count > 0 ? (total / count).toFixed(2) : 0) + "</strong></td><td></td>";
+  avgRow.innerHTML = "<td><strong>📉 Average</strong></td><td><strong>" + (count > 0 ? (total / count).toFixed(2) : 0) + "</strong></td><td></td>";
   table.appendChild(avgRow);
   
   container.appendChild(table);
@@ -1492,21 +2123,21 @@ function renderStudentsBySection(container, sectionFilter) {
     const idCard = document.createElement("div");
     idCard.className = "id-card";
     idCard.innerHTML = '<input type="checkbox" class="id-card-checkbox" data-student-id="' + s.id + '">' +
-      '<div class="id-card-header"><h3 style="margin:0;">DUMINGAG SENIOR HIGH SCHOOL</h3><p style="margin:0;font-size:11px;">Student ID Card</p></div>' +
+      '<div class="id-card-header"><h3 style="margin:0;">🎓 DUMINGAG SENIOR HIGH SCHOOL</h3><p style="margin:0;font-size:11px;">Student ID Card</p></div>' +
       '<div class="id-card-photo"><img src="' + (s.pic || 'https://via.placeholder.com/80') + '" alt="Photo" onerror="this.src=\'https://via.placeholder.com/80\'"></div>' +
       '<div class="id-card-info"><p><strong>Name:</strong> ' + s.name + '</p><p><strong>ID No:</strong> ' + s.id + '</p>' +
       '<p><strong>Section:</strong> ' + s.section + '</p><p><strong>Track:</strong> ' + s.track + '</p>' +
       '<p><strong>Strand:</strong> ' + s.strand + '</p><p><strong>Grade:</strong> ' + s.gradeLevel + '</p></div>' +
-      '<div class="id-card-footer">Dumingag Senior High School - Dumingag, Zamboanga del Sur</div>' +
-      '<div id="qr-' + s.id + '" style="text-align:center;margin-top:10px;"></div>';
+      '<div class="id-card-footer">🎓 Dumingag Senior High School - Dumingag, Zamboanga del Sur</div>' +
+      '<div id="qr-' + s.id + '" style="text-align:center;margin-top:12px;"></div>';
     
     container.appendChild(idCard);
     
     setTimeout(function(){
       new QRCode(document.getElementById("qr-" + s.id), {
         text: s.name + "-" + s.id,
-        width: 60,
-        height: 60
+        width: 65,
+        height: 65
       });
     }, 100);
   });
@@ -1524,7 +2155,7 @@ function renderParentAccounts(container, sectionFilter) {
   }
   
   if(filteredAccounts.length === 0) {
-    container.innerHTML = "<p>No parent accounts found.</p>";
+    container.innerHTML = "<p>❌ No parent accounts found.</p>";
     return;
   }
   
@@ -1532,11 +2163,11 @@ function renderParentAccounts(container, sectionFilter) {
     const card = document.createElement("div");
     card.className = "parent-account-card";
     card.innerHTML = '<h4>👤 ' + p.studentName + '</h4>' +
-      '<p><strong>Student ID:</strong> ' + p.studentId + '</p>' +
-      '<p><strong>Section:</strong> ' + p.section + '</p>' +
+      '<p><strong>🆔 Student ID:</strong> ' + p.studentId + '</p>' +
+      '<p><strong>🏫 Section:</strong> ' + p.section + '</p>' +
       '<div class="credentials">' +
-      '<p><strong>Parent Username:</strong> ' + p.parentUsername + '</p>' +
-      '<p><strong>Parent Password:</strong> ' + p.parentPassword + '</p>' +
+      '<p><strong>👨‍💼 Parent Username:</strong> ' + p.parentUsername + '</p>' +
+      '<p><strong>🔑 Parent Password:</strong> ' + p.parentPassword + '</p>' +
       '</div>';
     container.appendChild(card);
   });
@@ -1555,7 +2186,7 @@ function toggleSelectAllStudents() {
 function printSelectedIDs() {
   const checkboxes = document.querySelectorAll(".id-card-checkbox:checked");
   if(checkboxes.length === 0) {
-    alert("Please select at least one student to print!");
+    alert("⚠️ Please select at least one student to print!");
     return;
   }
   window.print();
@@ -1567,7 +2198,7 @@ function approveStudent(id) {
   if(student) {
     student.approved = true;
     saveData();
-    alert(student.name + " has been approved!");
+    alert("✅ " + student.name + " has been approved!");
     loadSection("Student Approval");
   }
 }
@@ -1576,12 +2207,12 @@ function approveStudent(id) {
 function deleteStudent(id) {
   const student = students.find(function(s){ return s.id === id; });
   if(student) {
-    if(confirm("Are you sure you want to delete " + student.name + "?")) {
+    if(confirm("⚠️ Are you sure you want to delete " + student.name + "?")) {
       students = students.filter(function(s){ return s.id !== id; });
       delete gradesData[student.name];
       delete attendanceData[student.name];
       saveData();
-      alert(student.name + " has been deleted.");
+      alert("🗑️ " + student.name + " has been deleted.");
       loadSection("Student Approval");
     }
   }
@@ -1591,10 +2222,10 @@ function deleteStudent(id) {
 function deleteTeacher(id) {
   const teacher = teachers.find(function(t){ return t.id === id; });
   if(teacher) {
-    if(confirm("Are you sure you want to delete " + teacher.name + "?")) {
+    if(confirm("⚠️ Are you sure you want to delete " + teacher.name + "?")) {
       teachers = teachers.filter(function(t){ return t.id !== id; });
       saveData();
-      alert(teacher.name + " has been deleted.");
+      alert("🗑️ " + teacher.name + " has been deleted.");
       loadSection("Manage Users");
     }
   }
@@ -1610,12 +2241,12 @@ function createTeacher() {
   const password = document.getElementById("newTeacherPassword").value.trim();
   
   if(!name || !username || !password || !section) {
-    alert("Please fill in all required fields!");
+    alert("⚠️ Please fill in all required fields!");
     return;
   }
   
   if(teachers.find(function(t){ return t.username === username; })) {
-    alert("Username already exists!");
+    alert("❌ Username already exists!");
     return;
   }
   
@@ -1629,7 +2260,7 @@ function createTeacher() {
   });
   
   saveData();
-  alert("Teacher account created successfully!");
+  alert("✅ Teacher account created successfully!");
   
   document.getElementById("newTeacherName").value = "";
   document.getElementById("newTeacherID").value = "";
@@ -1687,12 +2318,12 @@ function addSubject() {
   const time = document.getElementById("newSubjectTime").value.trim();
   
   if(!name) {
-    alert("Please enter a subject name!");
+    alert("⚠️ Please enter a subject name!");
     return;
   }
   
   if(subjects.includes(name)) {
-    alert("Subject already exists!");
+    alert("❌ Subject already exists!");
     return;
   }
   
@@ -1712,7 +2343,7 @@ function addSubject() {
 function updateGrade(student, subject, newGrade) {
   const grade = parseInt(newGrade);
   if(isNaN(grade) || grade < 0 || grade > 100) {
-    alert("Grade must be between 0 and 100.");
+    alert("⚠️ Grade must be between 0 and 100.");
     loadSection("Grades");
     return;
   }
@@ -1726,7 +2357,7 @@ function updateGrade(student, subject, newGrade) {
 function uploadProfilePhoto() {
   const fileInput = document.getElementById("uploadPic");
   if(!fileInput.files || !fileInput.files[0]) {
-    alert("Please select a photo first!");
+    alert("⚠️ Please select a photo first!");
     return;
   }
   
@@ -1740,7 +2371,7 @@ function uploadProfilePhoto() {
         user.pic = photoData;
         saveData();
         document.getElementById("profilePic").src = photoData;
-        alert("Photo uploaded successfully!");
+        alert("✅ Photo uploaded successfully!");
       }
     } else if(role === "teacher") {
       const user = teachers.find(function(t){ return t.name === currentUser; });
@@ -1748,7 +2379,7 @@ function uploadProfilePhoto() {
         user.pic = photoData;
         saveData();
         document.getElementById("profilePic").src = photoData;
-        alert("Photo uploaded successfully!");
+        alert("✅ Photo uploaded successfully!");
       }
     } else if(role === "parent") {
       const user = parents.find(function(p){ return p.child === currentUser; });
@@ -1756,13 +2387,13 @@ function uploadProfilePhoto() {
         user.pic = photoData;
         saveData();
         document.getElementById("profilePic").src = photoData;
-        alert("Photo uploaded successfully!");
+        alert("✅ Photo uploaded successfully!");
       }
     } else if(role === "admin") {
       adminAccount.pic = photoData;
       saveData();
       document.getElementById("profilePic").src = photoData;
-      alert("Photo uploaded successfully!");
+      alert("✅ Photo uploaded successfully!");
     }
   };
   reader.readAsDataURL(fileInput.files[0]);
@@ -1775,7 +2406,7 @@ function sendChatMessage(tab) {
   const message = input.value.trim();
   
   if(!message) {
-    alert("Please type a message!");
+    alert("⚠️ Please type a message!");
     return;
   }
   
@@ -1791,7 +2422,7 @@ function addPlannerGoal(type) {
   const timeInput = document.getElementById(type + "GoalTime") || document.getElementById(type + "GoalDate");
   
   if(!input.value.trim()) {
-    alert("Please enter a goal!");
+    alert("⚠️ Please enter a goal!");
     return;
   }
   
@@ -1823,10 +2454,10 @@ function deletePlannerGoal(type, index) {
 
 function setAlarm(time) {
   if(!time) {
-    alert("No time set for this goal!");
+    alert("⏰ No time set for this goal!");
     return;
   }
-  alert("Alarm set for " + time + "\n\nNote: Browser notifications must be enabled for actual alerts.");
+  alert("🔔 Alarm set for " + time + "\n\nNote: Browser notifications must be enabled for actual alerts.");
 }
 
 //------ MY MOOD AI CHAT FUNCTIONS ------
@@ -1847,7 +2478,7 @@ function selectMood(mood) {
   
   // Send mood to chat
   const chatbox = document.getElementById("moodChatbox");
-  chatbox.innerHTML += '<div class="chat-message chat-user"><strong>You:</strong> ' + mood + '</div>';
+  chatbox.innerHTML += '<div class="chat-message chat-user"><strong>👤 You:</strong> ' + mood + '</div>';
   chatbox.scrollTop = chatbox.scrollHeight;
   
   // Get AI response based on mood
@@ -1859,14 +2490,14 @@ function sendMoodMessage() {
   const message = input.value.trim();
   
   if(!message && !selectedMood) {
-    alert("Please select a mood or type a message!");
+    alert("⚠️ Please select a mood or type a message!");
     return;
   }
   
   const chatbox = document.getElementById("moodChatbox");
   
   if(message) {
-    chatbox.innerHTML += '<div class="chat-message chat-user"><strong>You:</strong> ' + message + '</div>';
+    chatbox.innerHTML += '<div class="chat-message chat-user"><strong>👤 You:</strong> ' + message + '</div>';
     chatbox.scrollTop = chatbox.scrollHeight;
     input.value = "";
     
@@ -1879,7 +2510,7 @@ function getAIResponse(message) {
   const chatbox = document.getElementById("moodChatbox");
   
   // Show typing indicator
-  chatbox.innerHTML += '<div class="chat-message chat-ai" id="typingIndicator"><em>Thinking...</em></div>';
+  chatbox.innerHTML += '<div class="chat-message chat-ai" id="typingIndicator"><em>💭 Thinking...</em></div>';
   chatbox.scrollTop = chatbox.scrollHeight;
   
   // Simulated AI responses (rule-based - no API needed)
@@ -1888,7 +2519,7 @@ function getAIResponse(message) {
     if(typingIndicator) typingIndicator.remove();
     
     const response = getSupportiveResponse(message);
-    chatbox.innerHTML += '<div class="chat-message chat-ai"><strong>AI Companion:</strong> ' + response + '</div>';
+    chatbox.innerHTML += '<div class="chat-message chat-ai"><strong>🤗 AI Companion:</strong> ' + response + '</div>';
     chatbox.scrollTop = chatbox.scrollHeight;
   }, 1000);
 }
@@ -1936,6 +2567,45 @@ function getSupportiveResponse(message) {
   ];
   
   return responses[Math.floor(Math.random() * responses.length)];
+}
+
+//------ SEMESTER AND QUARTER SELECTORS ------
+function selectSemester(sem, btn) {
+  // Update button styles
+  const buttons = document.querySelectorAll(".sem-btn");
+  buttons.forEach(function(b) {
+    b.classList.remove("active");
+  });
+  btn.classList.add("active");
+  
+  // Update quarter selector based on semester
+  const quarterSelector = document.getElementById("quarterSelector");
+  if(quarterSelector) {
+    if(sem === 1) {
+      quarterSelector.innerHTML = `
+        <button class="quarter-btn active" onclick="selectQuarter(1, this)">1st Quarter</button>
+        <button class="quarter-btn" onclick="selectQuarter(2, this)">2nd Quarter</button>
+      `;
+    } else {
+      quarterSelector.innerHTML = `
+        <button class="quarter-btn active" onclick="selectQuarter(3, this)">3rd Quarter</button>
+        <button class="quarter-btn" onclick="selectQuarter(4, this)">4th Quarter</button>
+      `;
+    }
+  }
+}
+
+function selectQuarter(quarter, btn) {
+  // Update button styles
+  const buttons = document.querySelectorAll(".quarter-btn");
+  buttons.forEach(function(b) {
+    b.classList.remove("active");
+  });
+  btn.classList.add("active");
+  
+  // Here you would typically load grades for the selected quarter
+  // For now, we'll just show a message
+  console.log("Selected Quarter: " + quarter);
 }
 
 //------ INITIALIZE ON PAGE LOAD ------
